@@ -8,17 +8,18 @@ const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
+
   const isHomePage = location.pathname === '/';
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close menu on route change
   useEffect(() => {
     setMenuOpen(false);
   }, [location.pathname]);
@@ -26,10 +27,14 @@ const Header = () => {
   return (
     <header className={`header ${scrolled ? 'scrolled' : ''} ${!isHomePage ? 'light-mode' : ''}`}>
       <div className="header-container">
+
+        {/* LOGO */}
         <Link to="/" className="logo">
-          <img src={logoImg} alt="CivilPH" className="logo-img" />
+          <img src={logoImg} alt="CEguradista Logo" className="logo-img" />
+          <span className="logo-text">CEguradista</span>
         </Link>
 
+        {/* HAMBURGER */}
         <button
           className="hamburger-btn"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -38,6 +43,7 @@ const Header = () => {
           {menuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
 
+        {/* NAV */}
         <div className={`nav-menu ${menuOpen ? 'open' : ''}`}>
           <nav className="nav-links">
             <Link to="/" className="nav-item">Home</Link>
@@ -50,6 +56,7 @@ const Header = () => {
             <Link to="/signup" className="btn btn-primary">Sign Up</Link>
           </div>
         </div>
+
       </div>
     </header>
   );

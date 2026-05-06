@@ -25,6 +25,7 @@
   background-color: rgba(255, 255, 255, 0.95);
 }
 
+/* CONTAINER */
 .header-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -34,9 +35,12 @@
   align-items: center;
 }
 
+/* ================= LOGO ================= */
+
 .logo {
   display: flex;
   align-items: center;
+  gap: 10px;
   text-decoration: none;
   z-index: 101;
 }
@@ -46,15 +50,24 @@
   width: auto;
   object-fit: contain;
   display: block;
-  filter: brightness(0) invert(1);
-  transition: filter 0.3s;
+  background: transparent; /* fixes white box issue */
 }
 
-.header.light-mode .logo-img {
-  filter: none;
+.logo-text {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: var(--white);
+  transition: color 0.3s ease;
 }
 
-/* Hamburger Button */
+/* light mode logo text */
+.header.light-mode .logo-text {
+  color: var(--grey-900);
+}
+
+/* ================= HAMBURGER ================= */
+
 .hamburger-btn {
   display: none;
   background: none;
@@ -69,7 +82,8 @@
   color: var(--grey-800);
 }
 
-/* Nav Menu wrapper */
+/* ================= NAV ================= */
+
 .nav-menu {
   display: flex;
   align-items: center;
@@ -85,6 +99,7 @@
   color: var(--white);
   font-weight: 500;
   position: relative;
+  text-decoration: none;
 }
 
 .header.light-mode .nav-item {
@@ -106,6 +121,8 @@
   width: 100%;
 }
 
+/* ================= AUTH ================= */
+
 .auth-buttons {
   display: flex;
   align-items: center;
@@ -126,7 +143,8 @@
   color: var(--orange-400);
 }
 
-/* Mobile */
+/* ================= MOBILE ================= */
+
 @media (max-width: 768px) {
   .hamburger-btn {
     display: block;
@@ -138,7 +156,7 @@
     right: -100%;
     width: 280px;
     height: 100vh;
-    background-color: var(--midnight-900);
+    background-color: var(--white);
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
@@ -159,7 +177,7 @@
   }
 
   .nav-menu .nav-item {
-    color: var(--white);
+    color: var(--grey-900);
     font-size: 1.1rem;
   }
 
@@ -170,18 +188,16 @@
   }
 
   .nav-menu .btn-text {
-    color: var(--white);
-    text-align: center;
+    color: var(--grey-900);
     width: 100%;
   }
 
   .nav-menu .btn.btn-primary {
     width: 100%;
-    text-align: center;
     justify-content: center;
   }
 
-  /* Overlay behind menu */
+  /* overlay */
   .nav-menu.open::before {
     content: '';
     position: fixed;
