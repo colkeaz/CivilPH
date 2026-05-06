@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import { useAuth } from '../store/AuthContext';
 import '../styles/AuthPages.css';
 
@@ -38,7 +36,6 @@ const LoginPage = () => {
 
   return (
     <div className="auth-page-container">
-      <Header />
       <main className="auth-main">
         <div className="auth-card card">
           <h2 className="auth-title">Welcome Back</h2>
@@ -81,7 +78,6 @@ const LoginPage = () => {
           </div>
         </div>
       </main>
-      <Footer />
     </div>
   );
 };
