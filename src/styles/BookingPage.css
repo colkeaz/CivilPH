@@ -36,7 +36,7 @@
 }
 
 .step.active {
-  color: var(--cyan-600);
+  color: var(--orange-600);
 }
 
 .step-line {
@@ -79,7 +79,7 @@
 }
 
 .service-option.selected .option-content {
-  border-color: var(--cyan-500);
+  border-color: var(--orange-500);
   background-color: rgba(0, 212, 170, 0.05);
 }
 

@@ -44,12 +44,12 @@
 }
 
 .report-card:hover {
-  border-color: var(--cyan-400);
+  border-color: var(--orange-400);
   background-color: var(--grey-50);
 }
 
 .report-card.active {
-  border-color: var(--cyan-500);
+  border-color: var(--orange-500);
   background-color: rgba(0, 212, 170, 0.05);
   box-shadow: var(--shadow-sm);
 }
@@ -116,7 +116,7 @@
   background-color: var(--grey-50);
   padding: var(--spacing-lg);
   border-radius: var(--radius-md);
-  border-left: 4px solid var(--cyan-500);
+  border-left: 4px solid var(--orange-500);
 }
 
 .cost-range {

@@ -8,9 +8,9 @@
   --midnight-700: #142952;
   --midnight-600: #1a3366;
   
-  --cyan-400: #22e8c2;
-  --cyan-500: #00d4aa;
-  --cyan-600: #00b894;
+  --orange-400: #FF7A3D;
+  --orange-500: #FF5F15;
+  --orange-600: #E04D0C;
   
   --white: #ffffff;
   --grey-50: #f9f9fb;
@@ -71,7 +71,7 @@ a {
 /* Utilities */
 .text-center { text-align: center; }
 .text-white { color: var(--white); }
-.text-cyan { color: var(--cyan-500); }
+.text-orange { color: var(--orange-500); }
 .text-grey { color: var(--grey-600); }
 
 /* Components */
@@ -88,12 +88,12 @@ a {
 }
 
 .btn-primary {
-  background-color: var(--cyan-500);
+  background-color: var(--orange-500);
   color: var(--white);
 }
 
 .btn-primary:hover {
-  background-color: var(--cyan-600);
+  background-color: var(--orange-600);
 }
 
 .btn-outline {
@@ -123,6 +123,6 @@ a {
 
 .input-field:focus {
   outline: none;
-  border-color: var(--cyan-500);
-  box-shadow: 0 0 0 2px rgba(0, 212, 170, 0.2);
+  border-color: var(--orange-500);
+  box-shadow: 0 0 0 2px rgba(255, 95, 21, 0.2);
 }

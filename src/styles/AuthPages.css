@@ -68,7 +68,7 @@
 
 .forgot-password {
   font-size: 0.9rem;
-  color: var(--cyan-500);
+  color: var(--orange-500);
   font-weight: 500;
 }
 
@@ -121,13 +121,13 @@
 }
 
 .role-option:hover {
-  border-color: var(--cyan-400);
+  border-color: var(--orange-400);
 }
 
 .role-option.active {
-  border-color: var(--cyan-500);
+  border-color: var(--orange-500);
   background-color: rgba(0, 212, 170, 0.05);
-  color: var(--cyan-600) !important;
+  color: var(--orange-600) !important;
 }
 
 @media (max-width: 600px) {

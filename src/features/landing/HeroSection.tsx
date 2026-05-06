@@ -22,7 +22,7 @@ const HeroSection = () => {
         <h1 className="hero-title">
           <span className="text-white">Find and Book Licensed</span>
           <br />
-          <span className="text-cyan">Civil Engineers</span>
+          <span className="text-orange">Civil Engineers</span>
         </h1>
         
         <p className="hero-subtitle">

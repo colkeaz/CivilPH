@@ -4,22 +4,22 @@ import '../../styles/WhyChooseSection.css';
 
 const features = [
   {
-    icon: <FaShieldAlt className="feature-icon text-cyan" />,
+    icon: <FaShieldAlt className="feature-icon text-orange" />,
     title: 'Verified Professionals',
     description: 'Every engineer goes through a strict PRC license verification process before offering services.'
   },
   {
-    icon: <FaCalendarCheck className="feature-icon text-cyan" />,
+    icon: <FaCalendarCheck className="feature-icon text-orange" />,
     title: 'Easy Online Booking',
     description: 'View real-time availability and book consultations instantly without the back-and-forth.'
   },
   {
-    icon: <FaClipboardCheck className="feature-icon text-cyan" />,
+    icon: <FaClipboardCheck className="feature-icon text-orange" />,
     title: 'Digital Reports',
     description: 'Receive secure, comprehensive structural assessment reports directly in your account dashboard.'
   },
   {
-    icon: <FaRegMoneyBillAlt className="feature-icon text-cyan" />,
+    icon: <FaRegMoneyBillAlt className="feature-icon text-orange" />,
     title: 'Transparent Pricing',
     description: 'Clear service packages with upfront rates. Pay securely online via GCash, Cards, or QRPH.'
   }

@@ -46,7 +46,7 @@
   font-family: var(--font-heading);
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--cyan-500);
+  color: var(--orange-500);
 }
 
 .logo-accent {
@@ -71,7 +71,7 @@
   height: 2px;
   bottom: -4px;
   left: 0;
-  background-color: var(--cyan-500);
+  background-color: var(--orange-500);
   transition: width 0.3s;
 }
 
@@ -92,5 +92,5 @@
 }
 
 .btn-text:hover {
-  color: var(--cyan-400);
+  color: var(--orange-400);
 }

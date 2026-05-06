@@ -29,7 +29,7 @@
   font-family: var(--font-heading);
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--cyan-500);
+  color: var(--orange-500);
   margin-bottom: var(--spacing-md);
   display: inline-block;
 }
@@ -62,7 +62,7 @@
 }
 
 .link-group a:hover {
-  color: var(--cyan-400);
+  color: var(--orange-400);
 }
 
 .footer-bottom {

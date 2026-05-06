@@ -77,7 +77,7 @@ const LoginPage = () => {
           </form>
           
           <div className="auth-footer">
-            <p>Don't have an account? <Link to="/signup" className="text-cyan">Sign up here</Link></p>
+            <p>Don't have an account? <Link to="/signup" className="text-orange">Sign up here</Link></p>
           </div>
         </div>
       </main>

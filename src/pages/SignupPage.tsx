@@ -134,7 +134,7 @@ const SignupPage = () => {
           </form>
           
           <div className="auth-footer">
-            <p>Already have an account? <Link to="/login" className="text-cyan">Log in here</Link></p>
+            <p>Already have an account? <Link to="/login" className="text-orange">Log in here</Link></p>
           </div>
         </div>
       </main>

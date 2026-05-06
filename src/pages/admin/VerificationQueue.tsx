@@ -63,7 +63,7 @@ const VerificationQueue = () => {
                     </td>
                     <td>{eng.prcNumber}</td>
                     <td>{eng.expiryDate}</td>
-                    <td><a href={eng.documentUrl} target="_blank" rel="noopener noreferrer" className="text-cyan">View ID</a></td>
+                    <td><a href={eng.documentUrl} target="_blank" rel="noopener noreferrer" className="text-orange">View ID</a></td>
                     <td>
                       <div className="admin-actions">
                         <button 
