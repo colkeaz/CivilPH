@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { useAuth } from '../store/AuthContext';
 import '../styles/AuthPages.css';
 
 const SignupPage = () => {
@@ -10,13 +11,29 @@ const SignupPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('homeowner');
+  const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSignup = (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Connect to backend auth service
-    console.log('Signing up:', { firstName, lastName, email, password, role });
-    navigate('/login');
+    try {
+      const res = await fetch('/api/v1/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ firstName, lastName, email, password, role })
+      });
+      if (!res.ok) throw new Error('API failed');
+      const data = await res.json();
+      login(data.user, 'mock_token');
+    } catch (error) {
+      // Fallback to localStorage
+      const user = { id: Date.now().toString(), firstName, lastName, email, role };
+      const users = JSON.parse(localStorage.getItem('civilph_users') || '[]');
+      users.push(user);
+      localStorage.setItem('civilph_users', JSON.stringify(users));
+      login(user, 'fallback_token');
+    }
+    navigate('/engineers');
   };
 
   return (

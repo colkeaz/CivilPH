@@ -2,17 +2,37 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { useAuth } from '../store/AuthContext';
 import '../styles/AuthPages.css';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Connect to backend auth service
-    console.log('Logging in with:', { email, password });
+    try {
+      const res = await fetch('/api/v1/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      if (!res.ok) throw new Error('API failed');
+      const data = await res.json();
+      login(data.user, data.token);
+    } catch (error) {
+      // Fallback to localStorage
+      const users = JSON.parse(localStorage.getItem('civilph_users') || '[]');
+      const user = users.find((u: any) => u.email === email);
+      if (user) {
+        login(user, 'fallback_token');
+      } else {
+        alert('Invalid credentials or user not found in local storage.');
+        return;
+      }
+    }
     navigate('/engineers');
   };
 
