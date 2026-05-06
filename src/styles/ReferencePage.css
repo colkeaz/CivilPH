@@ -1,0 +1,115 @@
+.reference-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.reference-main {
+  flex: 1;
+  padding-top: 80px; /* Offset for header */
+}
+
+.reference-hero {
+  background-color: var(--orange-600); /* We use orange to match the new theme */
+  color: var(--white);
+  padding: var(--spacing-3xl) var(--spacing-xl);
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+.reference-hero-content {
+  max-width: 800px;
+  width: 100%;
+}
+
+.reference-hero h1 {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 700;
+  margin-bottom: var(--spacing-sm);
+}
+
+.reference-hero p {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  margin-bottom: var(--spacing-2xl);
+}
+
+.reference-search-wrapper {
+  background-color: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 0.5rem;
+  box-shadow: var(--shadow-lg);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.reference-search-input-container {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+}
+
+.reference-search-input-container .search-icon {
+  color: var(--grey-400);
+  margin-right: var(--spacing-md);
+}
+
+.reference-search-input-container .search-input {
+  flex: 1;
+  border: none;
+  font-size: 1.1rem;
+  font-family: var(--font-body);
+  color: var(--grey-800);
+  background: transparent;
+  outline: none;
+}
+
+.reference-categories {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-3xl) var(--spacing-xl);
+}
+
+.categories-header {
+  text-align: center;
+  margin-bottom: var(--spacing-2xl);
+}
+
+.categories-header h2 {
+  font-size: 2rem;
+  color: var(--midnight-900);
+  margin-bottom: var(--spacing-sm);
+}
+
+.categories-header p {
+  color: var(--grey-600);
+}
+
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+.category-card {
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+  border-bottom: 3px solid var(--orange-500);
+}
+
+.category-card h3 {
+  font-size: 1.25rem;
+  color: var(--midnight-800);
+  margin-bottom: var(--spacing-sm);
+}
+
+.category-card p {
+  color: var(--grey-600);
+  font-size: 0.95rem;
+}

@@ -9,6 +9,7 @@ import BookingPage from './pages/BookingPage';
 import CheckoutPage from './pages/CheckoutPage';
 import ReportsPage from './pages/ReportsPage';
 import VerificationQueue from './pages/admin/VerificationQueue';
+import ReferencePage from './pages/ReferencePage';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/booking/:engineerId" element={<BookingPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/reports" element={<ReportsPage />} />
+          <Route path="/reference" element={<ReferencePage />} />
           <Route path="/admin/verify" element={<VerificationQueue />} />
         </Routes>
       </main>
