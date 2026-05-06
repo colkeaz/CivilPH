@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { CheckCircle, MapPin, Star, Wallet } from 'lucide-react';
@@ -81,7 +82,7 @@ const EngineersPage = () => {
                   ))}
                 </div>
                 
-                <button className="btn btn-primary full-width mt-md">View Profile</button>
+                <Link to={`/engineer/${eng.id}`} className="btn btn-primary full-width mt-md" style={{ textAlign: 'center', display: 'block' }}>View Profile</Link>
               </div>
             ))}
           </section>
