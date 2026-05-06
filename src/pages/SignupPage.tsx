@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 import { useAuth } from '../store/AuthContext';
 import { User, Briefcase } from 'lucide-react';
 import '../styles/AuthPages.css';
@@ -37,6 +39,7 @@ const SignupPage = () => {
 
   return (
     <div className="auth-page-container">
+      <Header />
       <main className="auth-main">
         <div className="auth-card card signup-card">
           <h2 className="auth-title">Create an Account</h2>
@@ -119,6 +122,7 @@ const SignupPage = () => {
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 };

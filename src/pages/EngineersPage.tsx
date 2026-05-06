@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { CheckCircle, MapPin, Star, Wallet } from 'lucide-react';
@@ -13,7 +13,6 @@ const mockEngineers = [
 
 const EngineersPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const navigate = useNavigate();
 
   return (
     <div className="page-container">
@@ -83,12 +82,7 @@ const EngineersPage = () => {
                   ))}
                 </div>
                 
-                <button 
-                  className="btn btn-primary full-width mt-md"
-                  onClick={() => navigate(`/engineer/${eng.id}`)}
-                >
-                  View Profile
-                </button>
+                <Link to={`/engineer/${eng.id}`} className="btn btn-primary full-width mt-md">View Profile</Link>
               </div>
             ))}
           </section>
