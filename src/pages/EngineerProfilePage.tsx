@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { CheckCircle, MapPin, Star, Briefcase } from 'lucide-react';
 import '../styles/EngineerProfile.css';
 
 const EngineerProfilePage = () => {
@@ -16,11 +17,11 @@ const EngineerProfilePage = () => {
           <div className="profile-info">
             <h1 className="profile-name">Engr. Juan Dela Cruz</h1>
             <p className="profile-credentials">Civil Engineer • License #123456</p>
-            <span className="verified-badge">✓ PRC Verified</span>
+            <span className="verified-badge"><CheckCircle size={16} style={{ marginRight: '4px' }} /> PRC Verified</span>
             <div className="profile-meta">
-              <span>📍 Quezon City, Metro Manila</span>
-              <span>⭐ 4.8 (124 reviews)</span>
-              <span>💼 10+ years experience</span>
+              <span><MapPin size={16} style={{ marginRight: '4px', verticalAlign: 'text-bottom' }} /> Quezon City, Metro Manila</span>
+              <span><Star size={16} style={{ marginRight: '4px', verticalAlign: 'text-bottom' }} /> 4.8 (124 reviews)</span>
+              <span><Briefcase size={16} style={{ marginRight: '4px', verticalAlign: 'text-bottom' }} /> 10+ years experience</span>
             </div>
             <div className="profile-tags">
               <span className="tag-pill-small">Residential</span>

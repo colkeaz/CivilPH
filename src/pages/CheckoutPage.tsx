@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { CheckCircle, CreditCard, Smartphone, Lock } from 'lucide-react';
 import '../styles/CheckoutPage.css';
 
 const CheckoutPage = () => {
@@ -36,7 +37,7 @@ const CheckoutPage = () => {
         <Header />
         <main className="checkout-main success-main">
           <div className="success-card card">
-            <div className="success-icon">✓</div>
+            <div className="success-icon"><CheckCircle size={48} /></div>
             <h2>Payment Successful!</h2>
             <p>Your consultation with Engr. Juan Dela Cruz has been confirmed.</p>
             <div className="booking-details-summary">
@@ -89,7 +90,7 @@ const CheckoutPage = () => {
                     onChange={(e) => setPaymentMethod(e.target.value)}
                   />
                   <div className="payment-content">
-                    <span className="payment-icon">💳</span>
+                    <CreditCard className="payment-icon" />
                     <span>Credit / Debit Card</span>
                   </div>
                 </label>
@@ -102,7 +103,7 @@ const CheckoutPage = () => {
                     onChange={(e) => setPaymentMethod(e.target.value)}
                   />
                   <div className="payment-content">
-                    <span className="payment-icon">📱</span>
+                    <Smartphone className="payment-icon" />
                     <span>QRPH</span>
                   </div>
                 </label>
@@ -115,7 +116,7 @@ const CheckoutPage = () => {
               >
                 {isProcessing ? 'Processing...' : `Pay PHP ${price.toLocaleString()}`}
               </button>
-              <p className="secure-text">🔒 Secured by PayMongo</p>
+              <p className="secure-text"><Lock size={14} style={{ marginRight: '4px', verticalAlign: 'middle' }} /> Secured by PayMongo</p>
             </form>
           </div>
 

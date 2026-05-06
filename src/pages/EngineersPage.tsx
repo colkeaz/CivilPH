@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { CheckCircle, MapPin, Star, Wallet } from 'lucide-react';
 import '../styles/EngineersPage.css';
 
 const mockEngineers = [
@@ -64,14 +65,14 @@ const EngineersPage = () => {
                   <div className="eng-avatar">{eng.name.charAt(6)}</div>
                   <div>
                     <h3 className="eng-name">{eng.name}</h3>
-                    {eng.verified && <span className="verified-badge">✓ PRC Verified</span>}
+                    {eng.verified && <span className="verified-badge"><CheckCircle size={14} style={{ marginRight: '4px' }} /> PRC Verified</span>}
                   </div>
                 </div>
                 
                 <div className="eng-details">
-                  <p>📍 {eng.city}, {eng.region}</p>
-                  <p>⭐ {eng.rating} ({eng.reviews} reviews)</p>
-                  <p>💰 PHP {eng.rate} / hr</p>
+                  <p><MapPin size={14} style={{ marginRight: '4px' }} /> {eng.city}, {eng.region}</p>
+                  <p><Star size={14} style={{ marginRight: '4px' }} /> {eng.rating} ({eng.reviews} reviews)</p>
+                  <p><Wallet size={14} style={{ marginRight: '4px' }} /> PHP {eng.rate} / hr</p>
                 </div>
                 
                 <div className="eng-tags">
