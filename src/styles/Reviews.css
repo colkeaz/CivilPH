@@ -1,0 +1,68 @@
+.review-card {
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-sm);
+}
+
+.review-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.reviewer-name {
+  font-weight: 600;
+  color: var(--midnight-900);
+}
+
+.review-date {
+  font-size: 0.85rem;
+  color: var(--grey-400);
+}
+
+.star {
+  color: var(--grey-200);
+  font-size: 1.1rem;
+}
+
+.star.filled {
+  color: #ffb400; /* Gold */
+}
+
+.review-comment {
+  color: var(--grey-600);
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+.review-form {
+  padding: var(--spacing-xl);
+  margin-top: var(--spacing-2xl);
+  border: 1px solid var(--grey-200);
+}
+
+.review-form h3 {
+  margin-bottom: var(--spacing-lg);
+  color: var(--midnight-900);
+}
+
+.rating-select {
+  display: flex;
+  gap: var(--spacing-xs);
+  cursor: pointer;
+}
+
+.star-select {
+  font-size: 1.8rem;
+  color: var(--grey-200);
+  transition: color 0.2s;
+}
+
+.star-select:hover, .star-select.filled {
+  color: #ffb400;
+}
