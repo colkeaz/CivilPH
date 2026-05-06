@@ -65,6 +65,24 @@
   padding: 0 var(--spacing-lg);
 }
 
+@media (max-width: 768px) {
+  .search-bar-wrapper {
+    flex-direction: column;
+    border-radius: var(--radius-md);
+    padding: 0.5rem;
+  }
+  .search-input-container {
+    padding: 0.5rem;
+  }
+  .search-btn {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+  .hero-title {
+    font-size: clamp(2rem, 8vw, 3rem);
+  }
+}
+
 .search-icon {
   color: var(--grey-400);
   margin-right: var(--spacing-sm);
