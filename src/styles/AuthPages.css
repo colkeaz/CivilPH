@@ -126,8 +126,56 @@
 
 .role-option.active {
   border-color: var(--orange-500);
-  background-color: rgba(0, 212, 170, 0.05);
+  background-color: rgba(255, 95, 21, 0.05);
   color: var(--orange-600) !important;
+}
+
+/* New Role Selection Cards */
+.role-selection-cards {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.role-card {
+  flex: 1;
+  border: 2px solid var(--grey-200);
+  border-radius: var(--radius-md);
+  padding: 1.5rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: var(--white);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.role-card:hover {
+  border-color: var(--grey-400);
+}
+
+.role-card.active {
+  border-color: var(--orange-500);
+  background-color: rgba(255, 95, 21, 0.05);
+}
+
+.role-card.active .role-title,
+.role-card.active .role-icon {
+  color: var(--orange-500);
+}
+
+.role-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--grey-800);
+}
+
+.role-subtitle {
+  font-size: 0.85rem;
+  color: var(--grey-600);
 }
 
 @media (max-width: 600px) {

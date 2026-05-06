@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { useAuth } from '../store/AuthContext';
+import { User, Briefcase } from 'lucide-react';
 import '../styles/AuthPages.css';
 
 const SignupPage = () => {
@@ -45,6 +46,25 @@ const SignupPage = () => {
           <p className="auth-subtitle">Join CEguradista today</p>
           
           <form className="auth-form" onSubmit={handleSignup}>
+            <div className="role-selection-cards">
+              <div 
+                className={`role-card ${role === 'homeowner' ? 'active' : ''}`}
+                onClick={() => setRole('homeowner')}
+              >
+                <User className="role-icon" size={24} />
+                <span className="role-title">I'm a Client</span>
+                <span className="role-subtitle">Looking to hire</span>
+              </div>
+              <div 
+                className={`role-card ${role === 'engineer' ? 'active' : ''}`}
+                onClick={() => setRole('engineer')}
+              >
+                <Briefcase className="role-icon" size={24} />
+                <span className="role-title">I'm an Engineer</span>
+                <span className="role-subtitle">Offering services</span>
+              </div>
+            </div>
+
             <div className="form-row">
               <div className="form-group half-width">
                 <label htmlFor="firstName">First Name</label>
@@ -94,43 +114,7 @@ const SignupPage = () => {
               />
             </div>
 
-            <div className="form-group">
-              <label>I am a:</label>
-              <div className="role-selector">
-                <label className={`role-option ${role === 'homeowner' ? 'active' : ''}`}>
-                  <input 
-                    type="radio" 
-                    name="role" 
-                    value="homeowner" 
-                    checked={role === 'homeowner'} 
-                    onChange={(e) => setRole(e.target.value)}
-                  />
-                  Homeowner
-                </label>
-                <label className={`role-option ${role === 'contractor' ? 'active' : ''}`}>
-                  <input 
-                    type="radio" 
-                    name="role" 
-                    value="contractor" 
-                    checked={role === 'contractor'} 
-                    onChange={(e) => setRole(e.target.value)}
-                  />
-                  Contractor
-                </label>
-                <label className={`role-option ${role === 'engineer' ? 'active' : ''}`}>
-                  <input 
-                    type="radio" 
-                    name="role" 
-                    value="engineer" 
-                    checked={role === 'engineer'} 
-                    onChange={(e) => setRole(e.target.value)}
-                  />
-                  Civil Engineer
-                </label>
-              </div>
-            </div>
-            
-            <button type="submit" className="btn btn-primary auth-submit-btn">Sign Up</button>
+            <button type="submit" className="btn btn-primary auth-submit-btn">Create Account</button>
           </form>
           
           <div className="auth-footer">
