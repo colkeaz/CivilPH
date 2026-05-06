@@ -16,6 +16,15 @@
   box-shadow: var(--shadow-md);
 }
 
+.header.light-mode {
+  background-color: var(--white);
+  box-shadow: var(--shadow-sm);
+}
+
+.header.light-mode.scrolled {
+  background-color: rgba(255, 255, 255, 0.95);
+}
+
 .header-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -53,6 +62,10 @@
   color: var(--white);
 }
 
+.header.light-mode .logo-accent {
+  color: var(--midnight-900);
+}
+
 .nav-links {
   display: flex;
   gap: var(--spacing-xl);
@@ -62,6 +75,10 @@
   color: var(--white);
   font-weight: 500;
   position: relative;
+}
+
+.header.light-mode .nav-item {
+  color: var(--grey-800);
 }
 
 .nav-item::after {
@@ -89,6 +106,10 @@
   color: var(--white);
   font-weight: 500;
   transition: color 0.2s;
+}
+
+.header.light-mode .btn-text {
+  color: var(--grey-800);
 }
 
 .btn-text:hover {
