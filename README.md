@@ -69,4 +69,4 @@ The application will be available at `http://localhost:5173/`.
 The database schema is provided in `server/schema.sql`. You can import this into your MariaDB instance to set up the necessary tables.
 
 ---
-Developed by **CivilPH** - *Engaging professional engineering for a safer Philippines.*
+Developed by **Colkeaz** for comission purposes  - *Engaging professional engineering for a safer Philippines.*
