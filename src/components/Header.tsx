@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import logoImg from '../images/Logo.png';
 import '../styles/Header.css';
 
 const Header = () => {
@@ -23,10 +24,12 @@ const Header = () => {
   return (
     <header className={`header ${scrolled ? 'scrolled' : ''} ${!isHomePage ? 'light-mode' : ''}`}>
       <div className="header-container">
+
         <Link to="/" className="logo">
-          Civil<span className="logo-accent">PH</span>
+          <img src={logoImg} alt="CivilPH" className="logo-img" />
+          <span className="logo-text">CEguradista</span>
         </Link>
-        
+
         <nav className="nav-links">
           <Link to="/" className="nav-item">Home</Link>
           <Link to="/engineers" className="nav-item">Engineers</Link>
@@ -37,6 +40,7 @@ const Header = () => {
           <Link to="/login" className="btn-text">Log In</Link>
           <Link to="/signup" className="btn btn-primary">Sign Up</Link>
         </div>
+
       </div>
     </header>
   );

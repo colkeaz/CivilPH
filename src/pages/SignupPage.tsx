@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../store/AuthContext';
 import { User, Briefcase } from 'lucide-react';
+import logoBanner from '../images/LogoBanner.png';
 import '../styles/AuthPages.css';
 
 const SignupPage = () => {
@@ -36,15 +37,36 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="auth-fullpage">
-      <main className="auth-main">
-        <div className="auth-card card signup-card">
-          <h2 className="auth-title">Create an Account</h2>
-          <p className="auth-subtitle">Join CEguradista today</p>
-          
+    <div className="auth-split-page">
+      {/* Left Panel – Branding */}
+      <div className="auth-left-panel">
+        <div className="auth-panel-overlay" />
+        <div className="auth-panel-content">
+          <img src={logoBanner} alt="CEguradista" className="auth-logo-banner" />
+          <h2 className="auth-panel-headline">Join the CEguradista Network</h2>
+          <p className="auth-panel-subtext">
+            Whether you're a homeowner looking for safe structural advice, or a licensed engineer ready to serve — we've got you covered.
+          </p>
+          <div className="auth-panel-badges">
+            <span className="auth-badge">✓ Free to Register</span>
+            <span className="auth-badge">✓ PRC Verification Supported</span>
+            <span className="auth-badge">✓ Serve or Find Engineers</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Right Panel – Form */}
+      <div className="auth-right-panel">
+        <div className="auth-form-wrapper">
+          <div className="auth-form-header">
+            <h1 className="auth-title">Create your account</h1>
+            <p className="auth-subtitle">Join the trusted network of licensed civil engineering professionals</p>
+          </div>
+
           <form className="auth-form" onSubmit={handleSignup}>
+            {/* Role Selector */}
             <div className="role-selection-cards">
-              <div 
+              <div
                 className={`role-card ${role === 'homeowner' ? 'active' : ''}`}
                 onClick={() => setRole('homeowner')}
               >
@@ -52,7 +74,7 @@ const SignupPage = () => {
                 <span className="role-title">I'm a Client</span>
                 <span className="role-subtitle">Looking to hire</span>
               </div>
-              <div 
+              <div
                 className={`role-card ${role === 'engineer' ? 'active' : ''}`}
                 onClick={() => setRole('engineer')}
               >
@@ -65,22 +87,24 @@ const SignupPage = () => {
             <div className="form-row">
               <div className="form-group half-width">
                 <label htmlFor="firstName">First Name</label>
-                <input 
-                  type="text" 
-                  id="firstName" 
-                  className="input-field" 
-                  required 
+                <input
+                  type="text"
+                  id="firstName"
+                  className="input-field"
+                  placeholder="Juan"
+                  required
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                 />
               </div>
               <div className="form-group half-width">
                 <label htmlFor="lastName">Last Name</label>
-                <input 
-                  type="text" 
-                  id="lastName" 
-                  className="input-field" 
-                  required 
+                <input
+                  type="text"
+                  id="lastName"
+                  className="input-field"
+                  placeholder="Dela Cruz"
+                  required
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                 />
@@ -88,24 +112,26 @@ const SignupPage = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="email">Email Address</label>
-              <input 
-                type="email" 
-                id="email" 
-                className="input-field" 
-                required 
+              <label htmlFor="signup-email">Email Address</label>
+              <input
+                type="email"
+                id="signup-email"
+                className="input-field"
+                placeholder="juan@example.com"
+                required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            
+
             <div className="form-group">
-              <label htmlFor="password">Password</label>
-              <input 
-                type="password" 
-                id="password" 
-                className="input-field" 
-                required 
+              <label htmlFor="signup-password">Password</label>
+              <input
+                type="password"
+                id="signup-password"
+                className="input-field"
+                placeholder="Create a password"
+                required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -113,12 +139,12 @@ const SignupPage = () => {
 
             <button type="submit" className="btn btn-primary auth-submit-btn">Create Account</button>
           </form>
-          
+
           <div className="auth-footer">
             <p>Already have an account? <Link to="/login" className="text-orange">Log in here</Link></p>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 };
