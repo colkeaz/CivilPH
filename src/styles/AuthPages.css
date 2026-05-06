@@ -29,7 +29,7 @@
 .auth-left-panel {
   flex: 1;
   position: relative;
-  background: linear-gradient(135deg, var(--midnight-900) 0%, var(--midnight-700) 100%);
+   background: linear-gradient(135deg, #FF5F15 0%, #E65100 100%);
   display: flex;
   align-items: center;
   justify-content: center;
