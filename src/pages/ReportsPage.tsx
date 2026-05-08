@@ -1,98 +1,201 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import '../styles/ReportsPage.css';
+import {
+  FileText, CheckCircle2, Clock, Download, ChevronRight,
+  User, CalendarDays, BadgeAlert, Wrench, DollarSign, X
+} from 'lucide-react';
 
 const mockReports = [
   {
     id: 'rep_1',
-    title: 'Structural Assessment - Residential House',
+    title: 'Structural Assessment — Residential House',
     engineer: 'Engr. Juan Dela Cruz',
     date: '2026-05-01',
     status: 'submitted',
-    summary: 'Visual inspection conducted. Minor hairline cracks found on the second-floor firewall.',
-    recommendations: 'Seal cracks with structural epoxy. Monitor for 6 months.',
-    estimatedCost: 'PHP 5,000 - 10,000'
+    summary: 'Visual inspection conducted. Minor hairline cracks found on the second-floor firewall. No signs of structural compromise at this time.',
+    recommendations: 'Seal cracks with structural epoxy. Apply waterproofing membrane on the affected area. Monitor for 6 months and re-inspect.',
+    estimatedCost: 'PHP 5,000 – 10,000',
   },
   {
     id: 'rep_2',
-    title: 'Design Review - Garage Extension',
+    title: 'Design Review — Garage Extension',
     engineer: 'Engr. Maria Santos',
     date: '2026-04-15',
     status: 'acknowledged',
-    summary: 'Reviewed proposed architectural plans for garage extension.',
-    recommendations: 'Increase column sizes to 300mm x 300mm for added seismic resistance.',
-    estimatedCost: 'N/A'
-  }
+    summary: 'Reviewed proposed architectural plans for a single-storey garage extension adjacent to the main residence. Plans are structurally feasible with minor modifications.',
+    recommendations: 'Increase column sizes to 300mm x 300mm for added seismic resistance. Ensure proper footing depth of at least 600mm below grade level.',
+    estimatedCost: 'N/A — Consultation Only',
+  },
 ];
+
+const STATUS_CONFIG: Record<string, { label: string; color: string; icon: React.ReactNode }> = {
+  submitted: {
+    label: 'Submitted',
+    color: 'bg-blue-50 text-blue-600 border-blue-100',
+    icon: <Clock size={12} />,
+  },
+  acknowledged: {
+    label: 'Acknowledged',
+    color: 'bg-emerald-50 text-emerald-600 border-emerald-100',
+    icon: <CheckCircle2 size={12} />,
+  },
+};
 
 const ReportsPage = () => {
   const [reports, setReports] = useState(mockReports);
-  const [selectedReport, setSelectedReport] = useState<any>(null);
+  const [selectedReport, setSelectedReport] = useState<typeof mockReports[0] | null>(null);
+
+  const handleAcknowledge = (id: string) => {
+    setReports(prev => prev.map(r => r.id === id ? { ...r, status: 'acknowledged' } : r));
+    setSelectedReport(prev => prev && prev.id === id ? { ...prev, status: 'acknowledged' } : prev);
+  };
 
   return (
-    <div className="page-container">
+    <div className="bg-[#f8fafd] min-h-screen flex flex-col font-sans">
       <Header />
-      <main className="reports-main">
-        <div className="reports-header">
-          <h1>Digital Reports Portal</h1>
-          <p>Access your structural assessment reports and engineer recommendations.</p>
-        </div>
 
-        <div className="reports-layout">
-          <div className="reports-list">
-            {reports.map(report => (
-              <div 
-                key={report.id} 
-                className={`report-card card ${selectedReport?.id === report.id ? 'active' : ''}`}
-                onClick={() => setSelectedReport(report)}
-              >
-                <div className="report-card-info">
-                  <h3>{report.title}</h3>
-                  <p className="report-meta">By {report.engineer} • {report.date}</p>
-                </div>
-                <span className={`status-badge ${report.status}`}>{report.status}</span>
-              </div>
-            ))}
+      <main className="flex-grow py-12">
+        <div className="max-w-[1280px] mx-auto px-6">
+
+          {/* Page Header */}
+          <div className="mb-10">
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">Reports Portal</h1>
+            <p className="text-gray-500 text-lg">Access your structural assessment reports and engineer recommendations.</p>
           </div>
 
-          <div className="report-details card">
-            {selectedReport ? (
-              <div className="report-view">
-                <div className="report-view-header">
-                  <h2>{selectedReport.title}</h2>
-                  <button className="btn btn-outline btn-sm">Download PDF</button>
-                </div>
-                
-                <div className="report-section">
-                  <h4>Engineer Summary</h4>
-                  <p>{selectedReport.summary}</p>
-                </div>
-                
-                <div className="report-section">
-                  <h4>Recommendations</h4>
-                  <p>{selectedReport.recommendations}</p>
-                </div>
-                
-                <div className="report-section highlight">
-                  <h4>Estimated Repair Cost Range</h4>
-                  <p className="cost-range">{selectedReport.estimatedCost}</p>
-                </div>
-                
-                <div className="report-actions">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+            {/* Reports List */}
+            <div className="lg:col-span-4 space-y-3">
+              <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">
+                {reports.length} Report{reports.length !== 1 ? 's' : ''}
+              </p>
+              {reports.map(report => {
+                const cfg = STATUS_CONFIG[report.status] || STATUS_CONFIG.submitted;
+                const isSelected = selectedReport?.id === report.id;
+                return (
+                  <button
+                    key={report.id}
+                    onClick={() => setSelectedReport(report)}
+                    className={`w-full text-left p-5 rounded-2xl border-2 transition-all ${
+                      isSelected
+                        ? 'border-[#006574] bg-[#006574]/5 shadow-sm'
+                        : 'border-gray-100 bg-white hover:border-gray-200 hover:shadow-sm'
+                    }`}
+                  >
+                    <div className="flex items-start gap-3 mb-3">
+                      <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${isSelected ? 'bg-[#006574] text-white' : 'bg-gray-100 text-gray-400'}`}>
+                        <FileText size={16} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-bold text-gray-900 text-sm leading-snug line-clamp-2">{report.title}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-gray-400 font-medium">{report.date}</span>
+                      <span className={`inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-full border ${cfg.color}`}>
+                        {cfg.icon} {cfg.label}
+                      </span>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Report Detail */}
+            <div className="lg:col-span-8">
+              {selectedReport ? (
+                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+                  {/* Detail Header */}
+                  <div className="flex items-start justify-between gap-4 mb-6">
+                    <div>
+                      <h2 className="text-2xl font-bold text-gray-900 mb-1">{selectedReport.title}</h2>
+                      <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500">
+                        <span className="flex items-center gap-1.5"><User size={14} />{selectedReport.engineer}</span>
+                        <span className="flex items-center gap-1.5"><CalendarDays size={14} />{selectedReport.date}</span>
+                        <span className={`inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-full border ${STATUS_CONFIG[selectedReport.status]?.color}`}>
+                          {STATUS_CONFIG[selectedReport.status]?.label}
+                        </span>
+                      </div>
+                    </div>
+                    <button className="flex-shrink-0 flex items-center gap-2 text-sm font-bold text-[#006574] border border-[#006574]/30 px-4 py-2 rounded-xl hover:bg-[#006574]/5 transition-all">
+                      <Download size={15} /> Download PDF
+                    </button>
+                  </div>
+
+                  <hr className="border-gray-100 mb-6" />
+
+                  <div className="space-y-6">
+                    {/* Summary */}
+                    <div>
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="w-7 h-7 bg-blue-50 rounded-lg flex items-center justify-center">
+                          <FileText size={14} className="text-blue-500" />
+                        </div>
+                        <h4 className="text-sm font-bold text-gray-700 uppercase tracking-wider">Engineer Summary</h4>
+                      </div>
+                      <p className="text-gray-600 leading-relaxed text-sm bg-gray-50 rounded-xl p-4 border border-gray-100">
+                        {selectedReport.summary}
+                      </p>
+                    </div>
+
+                    {/* Recommendations */}
+                    <div>
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="w-7 h-7 bg-amber-50 rounded-lg flex items-center justify-center">
+                          <Wrench size={14} className="text-amber-500" />
+                        </div>
+                        <h4 className="text-sm font-bold text-gray-700 uppercase tracking-wider">Recommendations</h4>
+                      </div>
+                      <p className="text-gray-600 leading-relaxed text-sm bg-gray-50 rounded-xl p-4 border border-gray-100">
+                        {selectedReport.recommendations}
+                      </p>
+                    </div>
+
+                    {/* Estimated Cost */}
+                    <div>
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="w-7 h-7 bg-emerald-50 rounded-lg flex items-center justify-center">
+                          <DollarSign size={14} className="text-emerald-500" />
+                        </div>
+                        <h4 className="text-sm font-bold text-gray-700 uppercase tracking-wider">Estimated Cost Range</h4>
+                      </div>
+                      <div className="bg-[#006574]/5 border border-[#006574]/15 rounded-xl p-4">
+                        <p className="text-xl font-bold text-[#006574]">{selectedReport.estimatedCost}</p>
+                        <p className="text-xs text-gray-400 mt-1">Estimate based on engineer's assessment. Actual costs may vary.</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Action */}
                   {selectedReport.status === 'submitted' && (
-                    <button className="btn btn-primary">Acknowledge Receipt</button>
+                    <div className="mt-8 pt-6 border-t border-gray-100 flex items-center gap-4">
+                      <button
+                        onClick={() => handleAcknowledge(selectedReport.id)}
+                        className="flex items-center gap-2 bg-[#006574] text-white font-bold px-6 py-3 rounded-xl hover:bg-[#004e5a] transition-all shadow-lg shadow-[#006574]/15"
+                      >
+                        <CheckCircle2 size={16} /> Acknowledge Receipt
+                      </button>
+                      <p className="text-xs text-gray-400">Tap to confirm you've reviewed this report.</p>
+                    </div>
                   )}
                 </div>
-              </div>
-            ) : (
-              <div className="no-report-selected">
-                <p>Select a report from the list to view details.</p>
-              </div>
-            )}
+              ) : (
+                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-16 flex flex-col items-center justify-center text-center h-full min-h-[400px]">
+                  <div className="w-16 h-16 bg-gray-50 rounded-2xl flex items-center justify-center mb-4 border border-gray-100">
+                    <FileText size={28} className="text-gray-300" />
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-1">No report selected</h3>
+                  <p className="text-gray-400 text-sm">Click a report on the left to view its details.</p>
+                </div>
+              )}
+            </div>
+
           </div>
         </div>
       </main>
+
       <Footer />
     </div>
   );
