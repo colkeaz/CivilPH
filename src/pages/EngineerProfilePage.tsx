@@ -191,9 +191,7 @@ const EngineerProfilePage = () => {
                     <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
                     Available for Hire
                   </div>
-                  <button className="text-gray-400 hover:text-gray-600 transition-colors">
-                    <Share2 size={20} />
-                  </button>
+                 
                 </div>
 
                 <div className="mb-8">
@@ -212,10 +210,7 @@ const EngineerProfilePage = () => {
                     <Calendar size={20} />
                     Book a Consultation
                   </Link>
-                  <button className="w-full border border-gray-300 text-gray-700 font-bold py-4 rounded-xl hover:bg-gray-50 transition-all flex items-center justify-center gap-3">
-                    <MessageSquare size={20} />
-                    Send Message
-                  </button>
+                  
                 </div>
 
                 <hr className="my-8 border-gray-100" />

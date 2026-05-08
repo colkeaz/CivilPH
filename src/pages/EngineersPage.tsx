@@ -166,14 +166,7 @@ const EngineersPage = () => {
               <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-xl font-bold text-gray-900">Find an Engineer</h3>
-                  {hasActiveFilters && (
-                    <button
-                      onClick={clearFilters}
-                      className="flex items-center gap-1 text-xs text-red-400 hover:text-red-600 font-medium transition-colors"
-                    >
-                      <X size={12} /> Clear
-                    </button>
-                  )}
+                  
                 </div>
 
                 <div className="space-y-5">
@@ -259,12 +252,7 @@ const EngineersPage = () => {
                   <div className="text-6xl mb-4">🔍</div>
                   <h3 className="text-xl font-bold text-gray-900 mb-2">No Engineers Found</h3>
                   <p className="text-gray-500 mb-6">Try adjusting your filters or search criteria.</p>
-                  <button
-                    onClick={clearFilters}
-                    className="bg-[#006574] text-white font-bold px-6 py-3 rounded-xl hover:bg-[#004e5a] transition-all"
-                  >
-                    Clear All Filters
-                  </button>
+                 
                 </div>
               ) : (
                 <>
@@ -373,9 +361,7 @@ const EngineersPage = () => {
                     </div>
                   )}
 
-                  <p className="text-center text-sm text-gray-400 mt-4">
-                    Showing {(currentPage - 1) * ENGINEERS_PER_PAGE + 1}–{Math.min(currentPage * ENGINEERS_PER_PAGE, filteredEngineers.length)} of {filteredEngineers.length} engineers
-                  </p>
+                 
                 </>
               )}
             </section>
