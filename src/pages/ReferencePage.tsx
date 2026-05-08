@@ -20,7 +20,8 @@ import {
   ChevronDown,
   ChevronUp,
 } from 'lucide-react';
-import { nscpData, permitData, homeownerArticles, NSCPChapter, BestPracticeArticle } from '../data/reference';
+import { nscpData, permitData, homeownerArticles } from '../data/reference';
+import type { NSCPChapter, BestPracticeArticle } from '../data/reference';
 
 // ── NSCP Chapter Detail Modal ─────────────────────────────────────────────────
 const NSCPModal = ({ chapter, onClose }: { chapter: NSCPChapter; onClose: () => void }) => {

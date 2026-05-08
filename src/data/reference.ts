@@ -305,7 +305,7 @@ export const homeownerArticles: BestPracticeArticle[] = [
     id: 'bp-2',
     title: 'Reading Structural Plans',
     category: 'Planning',
-    image: 'https://images.unsplash.com/photo-1590953572091-1b8451be4a09?auto=format&fit=crop&q=80&w=800',
+    image: 'https://images.unsplash.com/photo-1581092334651-ddf26d9a09d0?auto=format&fit=crop&q=80&w=800',
     excerpt:
       'A beginner-friendly guide to decoding the lines, symbols, and abbreviations used by engineers on structural drawings.',
     readTime: '8 min read',
