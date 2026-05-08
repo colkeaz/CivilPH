@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { 
@@ -14,11 +14,13 @@ import {
   Layers,
   Languages,
   Award,
-  AlertCircle
+  AlertCircle,
+  ChevronLeft
 } from 'lucide-react';
 import { mockEngineers } from '../data/engineers';
 
 const EngineerProfilePage = () => {
+   const navigate = useNavigate();
   const { id } = useParams();
   
   // Find the engineer based on the ID from the URL
@@ -52,6 +54,17 @@ const EngineerProfilePage = () => {
       
       <main className="flex-grow py-12">
         <div className="max-w-[1280px] mx-auto px-6">
+
+            {/* ✅ BACK BUTTON (ADDED ONLY THIS BLOCK) */}
+      <div className="max-w-[1280px] mx-auto px-6 pt-6 mb-6">
+        <button
+          onClick={() => navigate('/engineers')}
+          className="flex items-center gap-2 text-gray-600 hover:text-[#006574] font-medium transition cursor-pointer"
+        >
+          <ChevronLeft size={20} />
+          Back to Engineers
+        </button>
+      </div>
           
           {/* Profile Header Card */}
           <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 mb-8 flex flex-col md:flex-row items-center md:items-start gap-8">

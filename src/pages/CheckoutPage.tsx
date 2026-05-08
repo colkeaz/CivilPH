@@ -74,7 +74,7 @@ const CheckoutPage = () => {
               onClick={() => navigate('/engineers')}
               className="w-full bg-[#006574] text-white font-bold py-4 rounded-2xl hover:bg-[#004e5a] transition-all shadow-lg shadow-[#006574]/15 flex items-center justify-center gap-2"
             >
-              Back to Engineers <ArrowRight size={18} />
+              Back to Home <ArrowRight size={18} />
             </button>
           </div>
         </main>
