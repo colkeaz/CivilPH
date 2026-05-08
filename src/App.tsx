@@ -13,22 +13,21 @@ import ReferencePage from './pages/ReferencePage';
 
 function App() {
   return (
-    <div className="app-container">
-      <main>
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/engineers" element={<EngineersPage />} />
-          <Route path="/engineer/:id" element={<EngineerProfilePage />} />
-          <Route path="/booking/:engineerId" element={<BookingPage />} />
-          <Route path="/checkout" element={<CheckoutPage />} />
-          <Route path="/reports" element={<ReportsPage />} />
-          <Route path="/reference" element={<ReferencePage />} />
-          <Route path="/admin/verify" element={<VerificationQueue />} />
-        </Routes>
-      </main>
+    <div className="min-h-screen bg-surface">
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/engineers" element={<EngineersPage />} />
+        <Route path="/engineer/:id" element={<EngineerProfilePage />} />
+        <Route path="/booking/:engineerId" element={<BookingPage />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="/reports" element={<ReportsPage />} />
+        <Route path="/reference" element={<ReferencePage />} />
+        <Route path="/admin/verify" element={<VerificationQueue />} />
+      </Routes>
     </div>
+
   );
 }
 
