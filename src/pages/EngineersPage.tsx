@@ -82,14 +82,14 @@ const EngineersPage = () => {
               <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                 <h3 className="text-xl font-bold text-gray-900 mb-6">Quick Links</h3>
                 <div className="space-y-4">
-                  <button className="flex items-center gap-3 text-gray-600 hover:text-[#006574] transition-colors w-full group">
+                  <span className="flex items-center gap-3 text-gray-600 hover:text-[#006574] transition-colors w-full group">
                     <Star size={18} className="text-gray-400 group-hover:text-[#006574]" />
                     <span className="font-medium">Top Rated Engineers</span>
-                  </button>
-                  <button className="flex items-center gap-3 text-gray-600 hover:text-[#006574] transition-colors w-full group">
+                  </span>
+                  <span className="flex items-center gap-3 text-gray-600 hover:text-[#006574] transition-colors w-full group">
                     <CheckCircle2 size={18} className="text-gray-400 group-hover:text-[#006574]" />
                     <span className="font-medium">New Professionals</span>
-                  </button>
+                  </span>
                 </div>
               </div>
             </aside>
@@ -150,7 +150,7 @@ const EngineersPage = () => {
                     <Link 
                       to={`/engineer/${eng.id}`} 
                       className={`w-full font-bold py-3 rounded-xl transition-all text-center ${
-                        eng.id === 3 
+                        eng.id === -1
                           ? 'border border-[#38637a] text-[#38637a] hover:bg-[#38637a] hover:text-white' 
                           : 'bg-[#38637a] text-white hover:bg-[#2c4e61]'
                       }`}

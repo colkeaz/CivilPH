@@ -1,10 +1,19 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Menu, X, LogOut, User } from 'lucide-react';
+import { useAuth } from '../store/AuthContext';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, isAuthenticated, logout } = useAuth();
+
+  const handleLogout = async () => {
+    await logout();
+    setIsMenuOpen(false);
+    navigate('/');
+  };
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -38,8 +47,28 @@ const Header = () => {
         </nav>
         
         <div className="hidden md:flex items-center gap-6">
-          <Link to="/login" className="text-sm font-medium text-gray-600 hover:text-[#191c1e] transition-colors">Log In</Link>
-          <Link to="/signup" className="bg-[#006574] text-white text-sm font-bold px-6 py-2.5 rounded hover:bg-[#004e5a] transition-all">Sign Up</Link>
+          {isAuthenticated ? (
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                <div className="w-8 h-8 rounded-full bg-[#006574] flex items-center justify-center text-white text-xs font-bold">
+                  {user?.firstName?.charAt(0) || <User size={14} />}
+                </div>
+                <span>{user?.firstName || 'User'}</span>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-red-500 transition-colors"
+              >
+                <LogOut size={15} />
+                Logout
+              </button>
+            </div>
+          ) : (
+            <>
+              <Link to="/login" className="text-sm font-medium text-gray-600 hover:text-[#191c1e] transition-colors">Log In</Link>
+              <Link to="/signup" className="bg-[#006574] text-white text-sm font-bold px-6 py-2.5 rounded hover:bg-[#004e5a] transition-all">Sign Up</Link>
+            </>
+          )}
         </div>
         
         {/* Mobile Toggle */}
@@ -65,8 +94,24 @@ const Header = () => {
             </Link>
           ))}
           <hr className="border-gray-100 my-2" />
-          <Link to="/login" className="text-gray-600 font-medium py-2" onClick={() => setIsMenuOpen(false)}>Log In</Link>
-          <Link to="/signup" className="bg-[#006574] text-white text-center py-3 rounded font-bold" onClick={() => setIsMenuOpen(false)}>Sign Up</Link>
+          {isAuthenticated ? (
+            <>
+              <div className="flex items-center gap-2 py-2 text-gray-700 font-medium">
+                <div className="w-7 h-7 rounded-full bg-[#006574] flex items-center justify-center text-white text-xs font-bold">
+                  {user?.firstName?.charAt(0) || '?'}
+                </div>
+                {user?.firstName} {user?.lastName}
+              </div>
+              <button onClick={handleLogout} className="flex items-center gap-2 text-red-500 font-medium py-2">
+                <LogOut size={16} /> Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/login" className="text-gray-600 font-medium py-2" onClick={() => setIsMenuOpen(false)}>Log In</Link>
+              <Link to="/signup" className="bg-[#006574] text-white text-center py-3 rounded font-bold" onClick={() => setIsMenuOpen(false)}>Sign Up</Link>
+            </>
+          )}
         </div>
       )}
     </header>
