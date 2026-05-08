@@ -196,7 +196,7 @@ export const nscpData: NSCPChapter[] = [
       {
         heading: 'Allowable Stress Design',
         content:
-          'All timber design uses Allowable Stress Design (ASD). Actual stress must not exceed adjusted allowable stress F' = F × CD × CM × Ct × CF × Ci. CD = load duration factor (1.15 for snow, 1.25 for construction, 1.6 for wind/seismic). CM = wet service factor (0.85 for bending when EMC > 19%).',
+          "All timber design uses Allowable Stress Design (ASD). Actual stress must not exceed adjusted allowable stress F' = F \u00d7 CD \u00d7 CM \u00d7 Ct \u00d7 CF \u00d7 Ci. CD = load duration factor (1.15 for snow, 1.25 for construction, 1.6 for wind/seismic). CM = wet service factor (0.85 for bending when EMC > 19%).",
       },
       {
         heading: 'Connections',
