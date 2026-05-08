@@ -4,6 +4,8 @@ import { useAuth } from '../store/AuthContext';
 import { Mail, Lock, User, Phone, ArrowRight, ShieldCheck } from 'lucide-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import Toast from '../components/Toast';
+import { supabase } from '../utils/supabaseClient';
 
 const SignupPage = () => {
   const [role, setRole] = useState<'homeowner' | 'engineer'>('homeowner');
@@ -14,12 +16,36 @@ const SignupPage = () => {
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [error, setError] = useState('');
   
+  const [toast, setToast] = useState<{ message: string, type: 'success' | 'error' } | null>(null);
   const { login } = useAuth();
   const navigate = useNavigate();
+
+  const validateEmail = (email: string) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+
+    if (!fullName || !email || !phone || !password) {
+      setError('Please fill in all fields.');
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters long.');
+      return;
+    }
 
     if (!agreeTerms) {
       setError('You must agree to the Terms of Service and Privacy Policy.');
@@ -27,23 +53,35 @@ const SignupPage = () => {
     }
 
     try {
-      const newUser = {
-        id: Math.random().toString(36).substr(2, 9),
-        firstName: fullName.split(' ')[0],
-        lastName: fullName.split(' ').slice(1).join(' '),
+      const firstName = fullName.split(' ')[0];
+      const lastName = fullName.split(' ').slice(1).join(' ') || ' ';
+
+      const { data, error: signUpError } = await supabase.auth.signUp({
         email,
-        role: role === 'homeowner' ? 'CLIENT' : 'ENGINEER'
-      };
+        password,
+        options: {
+          data: {
+            firstName,
+            lastName,
+            phone,
+            role: role === 'homeowner' ? 'homeowner' : 'engineer'
+          }
+        }
+      });
 
-      // Mocking persistence
-      const users = JSON.parse(localStorage.getItem('civilph_users') || '[]');
-      users.push(newUser);
-      localStorage.setItem('civilph_users', JSON.stringify(users));
-
-      login(newUser, 'mock_token');
-      navigate('/engineers');
-    } catch (err) {
-      setError('Registration failed. Please try again.');
+      if (signUpError) throw signUpError;
+      
+      setToast({ message: 'Registration Successful! Please check your email for verification.', type: 'success' });
+      
+      // If email confirmation is disabled in Supabase, the user might be logged in immediately
+      if (data.session) {
+        setTimeout(() => {
+          navigate('/engineers');
+        }, 2000);
+      }
+      
+    } catch (err: any) {
+      setError(err.message || 'Registration failed. Please try again.');
     }
   };
 
@@ -220,6 +258,13 @@ const SignupPage = () => {
       </main>
 
       <Footer />
+      {toast && (
+        <Toast 
+          message={toast.message} 
+          type={toast.type} 
+          onClose={() => setToast(null)} 
+        />
+      )}
     </div>
   );
 };

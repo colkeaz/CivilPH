@@ -1,4 +1,6 @@
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+import { supabase } from '../utils/supabaseClient';
+import { Session, User as SupabaseUser } from '@supabase/supabase-js';
 
 type User = {
   id: string;
@@ -10,46 +12,68 @@ type User = {
 
 interface AuthContextType {
   user: User | null;
-  token: string | null;
-  login: (userData: User, token: string) => void;
-  logout: () => void;
+  session: Session | null;
+  loading: boolean;
+  logout: () => Promise<void>;
   isAuthenticated: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(() => {
-    const savedUser = localStorage.getItem('civilph_user');
-    return savedUser ? JSON.parse(savedUser) : null;
-  });
-  const [token, setToken] = useState<string | null>(() => {
-    return localStorage.getItem('civilph_token') || null;
-  });
+  const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const login = (userData: User, jwtToken: string) => {
-    setUser(userData);
-    setToken(jwtToken);
-    localStorage.setItem('civilph_user', JSON.stringify(userData));
-    localStorage.setItem('civilph_token', jwtToken);
+  useEffect(() => {
+    // Check active sessions and sets the user
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      if (session?.user) {
+        mapSupabaseUserToUser(session.user);
+      }
+      setLoading(false);
+    });
+
+    // Listen for changes on auth state (logged in, signed out, etc.)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+      if (session?.user) {
+        mapSupabaseUserToUser(session.user);
+      } else {
+        setUser(null);
+      }
+      setLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const mapSupabaseUserToUser = (supabaseUser: SupabaseUser) => {
+    setUser({
+      id: supabaseUser.id,
+      firstName: supabaseUser.user_metadata?.firstName || '',
+      lastName: supabaseUser.user_metadata?.lastName || '',
+      email: supabaseUser.email || '',
+      role: supabaseUser.user_metadata?.role || 'homeowner',
+    });
   };
 
-  const logout = () => {
+  const logout = async () => {
+    await supabase.auth.signOut();
     setUser(null);
-    setToken(null);
-    localStorage.removeItem('civilph_user');
-    localStorage.removeItem('civilph_token');
+    setSession(null);
   };
 
   return (
     <AuthContext.Provider value={{
       user,
-      token,
-      login,
+      session,
+      loading,
       logout,
       isAuthenticated: !!user
     }}>
-      {children}
+      {!loading && children}
     </AuthContext.Provider>
   );
 };

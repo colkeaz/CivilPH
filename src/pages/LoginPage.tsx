@@ -4,12 +4,15 @@ import { useAuth } from '../store/AuthContext';
 import { Mail, Lock, CheckCircle2 } from 'lucide-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import Toast from '../components/Toast';
+import { supabase } from '../utils/supabaseClient';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+  const [toast, setToast] = useState<{ message: string, type: 'success' | 'error' } | null>(null);
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -17,20 +20,27 @@ const LoginPage = () => {
     e.preventDefault();
     setError('');
     
-    // Auth logic (keeping existing logic but styled)
+    if (!email || !password) {
+      setError('Please enter both email and password.');
+      return;
+    }
+
     try {
-      // Mocking API success for now since we don't have a backend
-      const users = JSON.parse(localStorage.getItem('civilph_users') || '[]');
-      const user = users.find((u: any) => u.email === email);
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (signInError) throw signInError;
       
-      if (user) {
-        login(user, 'mock_token');
+      setToast({ message: 'Login successful!', type: 'success' });
+      
+      setTimeout(() => {
         navigate('/engineers');
-      } else {
-        setError('Invalid email or password. Please try again.');
-      }
-    } catch (err) {
-      setError('An error occurred. Please try again.');
+      }, 1000);
+      
+    } catch (err: any) {
+      setError(err.message || 'Invalid email or password. Please try again.');
     }
   };
 
@@ -163,6 +173,13 @@ const LoginPage = () => {
       </main>
 
       <Footer />
+      {toast && (
+        <Toast 
+          message={toast.message} 
+          type={toast.type} 
+          onClose={() => setToast(null)} 
+        />
+      )}
     </div>
   );
 };

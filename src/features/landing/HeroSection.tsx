@@ -42,7 +42,10 @@ const HeroSection = () => {
                 Find an Engineer
                 <ArrowRight size={22} className="group-hover:translate-x-1 transition-transform" />
               </button>
-              <button className="bg-white border border-gray-200 text-gray-700 font-bold px-10 py-4 rounded-xl hover:bg-gray-50 transition-all shadow-sm">
+              <button 
+                onClick={() => navigate('/reference')}
+                className="bg-white border border-gray-200 text-gray-700 font-bold px-10 py-4 rounded-xl hover:bg-gray-50 transition-all shadow-sm"
+              >
                 Explore Projects
               </button>
             </div>

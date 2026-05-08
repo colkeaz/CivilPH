@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import HeroSection from '../features/landing/HeroSection';
 import WhyChooseSection from '../features/landing/WhyChooseSection';
@@ -69,7 +70,7 @@ const LandingPage = () => {
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Are you a Licensed Civil Engineer?</h2>
             <p className="text-xl text-gray-400 mb-12 leading-relaxed">Join an elite network of professionals. Expand your practice, connect with high-intent clients, and manage your pipeline through our dedicated professional dashboard.</p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <button className="bg-[#a3eeff] text-[#001f25] font-bold px-12 py-5 rounded-xl hover:bg-[#76d4e7] transition-all shadow-lg shadow-[#a3eeff]/10">Apply as Engineer</button>
+              <Link to="/signup" className="bg-[#a3eeff] text-[#001f25] font-bold px-12 py-5 rounded-xl hover:bg-[#76d4e7] transition-all shadow-lg shadow-[#a3eeff]/10">Apply as Engineer</Link>
               <button className="border border-gray-600 text-white font-bold px-12 py-5 rounded-xl hover:bg-white/5 transition-all">View Requirements</button>
             </div>
           </div>
