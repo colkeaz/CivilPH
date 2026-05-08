@@ -1,44 +1,61 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Share2, Mail } from 'lucide-react';
 
 const Footer = () => {
   return (
     <footer className="bg-white border-t border-gray-100 py-14">
       <div className="w-full max-w-[1280px] mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-1">
-          <div className="md:col-span-6 lg:col-span-7 space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-10">
+
+          {/* Brand */}
+          <div className="md:col-span-5 space-y-4">
             <Link to="/" className="flex items-center gap-2">
               <div className="text-[#006574]">
                 <span className="material-symbols-outlined text-3xl">architecture</span>
               </div>
               <span className="text-2xl font-bold text-[#191c1e] tracking-tight">CivilPH</span>
             </Link>
-            <p className="text-gray-500 leading-relaxed max-w-[400px] text-base">
-              Connecting you with verified structural and civil engineering professionals across the Philippines.
+            <p className="text-gray-500 leading-relaxed max-w-[340px] text-sm">
+              Connecting homeowners and contractors with verified structural and civil engineering professionals across the Philippines.
             </p>
-              <p className="text-gray-400 text-sm font-medium">© {new Date().getFullYear()} CivilPH. All rights reserved.</p>
+            <p className="text-gray-400 text-xs font-medium">© {new Date().getFullYear()} CivilPH. All rights reserved.</p>
           </div>
-          
-          <div className="md:col-span-3 lg:col-span-2">
+
+          {/* Platform */}
+          <div className="md:col-span-3">
             <h4 className="text-sm font-bold text-[#191c1e] mb-6 uppercase tracking-wider">Platform</h4>
-            <ul className="space-y-4">
-              <li><Link to="/engineers" className="text-gray-500 hover:text-[#006574] transition-colors font-medium">Find a Civil Engineer</Link></li>
-              <li><Link to="/reference" className="text-gray-500 hover:text-[#006574] transition-colors font-medium">Engineering Reference</Link></li>
-              <li><Link to="/engineers" className="text-gray-500 hover:text-[#006574] transition-colors font-medium">Join as Civil Engineer</Link></li>
+            <ul className="space-y-3">
+              <li><Link to="/engineers" className="text-gray-500 hover:text-[#006574] transition-colors text-sm font-medium">Find an Engineer</Link></li>
+              <li><Link to="/reference" className="text-gray-500 hover:text-[#006574] transition-colors text-sm font-medium">Reference Guide (NSCP)</Link></li>
+              <li><Link to="/reports" className="text-gray-500 hover:text-[#006574] transition-colors text-sm font-medium">My Reports</Link></li>
+              <li><Link to="/engineers" className="text-gray-500 hover:text-[#006574] transition-colors text-sm font-medium">Join as Engineer</Link></li>
             </ul>
           </div>
-          
-          <div className="md:col-span-3 lg:col-span-3">
-            <h4 className="text-sm font-bold text-[#191c1e] mb-6 uppercase tracking-wider">Legal & Trust</h4>
-            <ul className="space-y-4">
-              <li><Link to="#" className="text-gray-500 hover:text-[#006574] transition-colors font-medium">Privacy Policy</Link></li>
-              <li><Link to="#" className="text-gray-500 hover:text-[#006574] transition-colors font-medium">Terms of Service</Link></li>
-              <li><Link to="#" className="text-gray-500 hover:text-[#006574] transition-colors font-medium">Verification Process</Link></li>
+
+          {/* Admin & Trust */}
+          <div className="md:col-span-4">
+            <h4 className="text-sm font-bold text-[#191c1e] mb-6 uppercase tracking-wider">Admin & Trust</h4>
+            <ul className="space-y-3">
+              <li>
+                <Link to="/admin/verify" className="text-gray-500 hover:text-[#006574] transition-colors text-sm font-medium">
+                  PRC Verification Queue
+                </Link>
+              </li>
+              <li><Link to="#" className="text-gray-500 hover:text-[#006574] transition-colors text-sm font-medium">Privacy Policy</Link></li>
+              <li><Link to="#" className="text-gray-500 hover:text-[#006574] transition-colors text-sm font-medium">Terms of Service</Link></li>
+              <li><Link to="#" className="text-gray-500 hover:text-[#006574] transition-colors text-sm font-medium">Verification Process</Link></li>
             </ul>
           </div>
         </div>
-        
+
+        {/* Bottom divider */}
+        <div className="border-t border-gray-100 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-xs text-gray-400">Built for the Philippine construction industry · NSCP 2015 Compliant References</p>
+          <div className="flex items-center gap-4">
+            <Link to="/login" className="text-xs text-gray-400 hover:text-[#006574] transition-colors font-medium">Log In</Link>
+            <Link to="/signup" className="text-xs text-gray-400 hover:text-[#006574] transition-colors font-medium">Sign Up</Link>
+          </div>
+        </div>
       </div>
     </footer>
   );

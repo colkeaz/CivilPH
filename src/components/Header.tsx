@@ -1,17 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, LogOut, User } from 'lucide-react';
+import { Menu, X, LogOut, User, FileText, ShieldCheck, ChevronDown } from 'lucide-react';
 import { useAuth } from '../store/AuthContext';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { user, isAuthenticated, logout } = useAuth();
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setIsUserDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
 
   const handleLogout = async () => {
     await logout();
     setIsMenuOpen(false);
+    setIsUserDropdownOpen(false);
     navigate('/');
   };
 
@@ -49,19 +62,61 @@ const Header = () => {
         <div className="hidden md:flex items-center gap-6">
           {isAuthenticated ? (
             <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2 text-sm font-medium text-gray-700">
-                <div className="w-8 h-8 rounded-full bg-[#006574] flex items-center justify-center text-white text-xs font-bold">
-                  {user?.firstName?.charAt(0) || <User size={14} />}
-                </div>
-                <span>{user?.firstName || 'User'}</span>
-              </div>
-              <button
-                onClick={handleLogout}
-                className="flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-red-500 transition-colors"
+              {/* My Reports quick link */}
+              <Link
+                to="/reports"
+                className={`flex items-center gap-1.5 text-sm font-medium transition-colors hover:text-[#006574] ${
+                  location.pathname === '/reports' ? 'text-[#006574]' : 'text-gray-600'
+                }`}
               >
-                <LogOut size={15} />
-                Logout
-              </button>
+                <FileText size={15} /> My Reports
+              </Link>
+
+              {/* User dropdown */}
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
+                  className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-[#006574] transition-colors"
+                >
+                  <div className="w-8 h-8 rounded-full bg-[#006574] flex items-center justify-center text-white text-xs font-bold">
+                    {user?.firstName?.charAt(0) || <User size={14} />}
+                  </div>
+                  <span>{user?.firstName || 'User'}</span>
+                  <ChevronDown size={14} className={`text-gray-400 transition-transform ${isUserDropdownOpen ? 'rotate-180' : ''}`} />
+                </button>
+
+                {isUserDropdownOpen && (
+                  <div className="absolute right-0 top-full mt-2 w-52 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden z-50">
+                    <div className="px-4 py-3 border-b border-gray-50">
+                      <p className="text-xs text-gray-400 font-medium">Signed in as</p>
+                      <p className="text-sm font-bold text-gray-900 truncate">{user?.firstName} {user?.lastName}</p>
+                    </div>
+                    <div className="p-2">
+                      <Link
+                        to="/reports"
+                        onClick={() => setIsUserDropdownOpen(false)}
+                        className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                      >
+                        <FileText size={15} className="text-gray-400" /> My Reports
+                      </Link>
+                      <Link
+                        to="/admin/verify"
+                        onClick={() => setIsUserDropdownOpen(false)}
+                        className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                      >
+                        <ShieldCheck size={15} className="text-[#006574]" /> Admin Panel
+                      </Link>
+                      <div className="border-t border-gray-50 my-1" />
+                      <button
+                        onClick={handleLogout}
+                        className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-medium text-red-500 hover:bg-red-50 transition-colors"
+                      >
+                        <LogOut size={15} /> Logout
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           ) : (
             <>
@@ -102,6 +157,20 @@ const Header = () => {
                 </div>
                 {user?.firstName} {user?.lastName}
               </div>
+              <Link
+                to="/reports"
+                className="flex items-center gap-2 text-gray-700 font-medium py-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <FileText size={16} className="text-gray-400" /> My Reports
+              </Link>
+              <Link
+                to="/admin/verify"
+                className="flex items-center gap-2 text-[#006574] font-medium py-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <ShieldCheck size={16} /> Admin Panel
+              </Link>
               <button onClick={handleLogout} className="flex items-center gap-2 text-red-500 font-medium py-2">
                 <LogOut size={16} /> Logout
               </button>
