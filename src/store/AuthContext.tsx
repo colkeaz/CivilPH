@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import { supabase } from '../utils/supabaseClient';
-import { Session, User as SupabaseUser } from '@supabase/supabase-js';
+import type { Session, User as SupabaseUser } from '@supabase/supabase-js';
 
 type User = {
   id: string;
@@ -50,12 +50,29 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const mapSupabaseUserToUser = (supabaseUser: SupabaseUser) => {
+    const meta = supabaseUser.user_metadata || {};
+    // Google OAuth provides full_name, email signup provides firstName/lastName
+    let firstName = meta.firstName || '';
+    let lastName = meta.lastName || '';
+    
+    if (!firstName && meta.full_name) {
+      const parts = meta.full_name.split(' ');
+      firstName = parts[0] || '';
+      lastName = parts.slice(1).join(' ') || '';
+    }
+    
+    if (!firstName && meta.name) {
+      const parts = meta.name.split(' ');
+      firstName = parts[0] || '';
+      lastName = parts.slice(1).join(' ') || '';
+    }
+
     setUser({
       id: supabaseUser.id,
-      firstName: supabaseUser.user_metadata?.firstName || '',
-      lastName: supabaseUser.user_metadata?.lastName || '',
+      firstName,
+      lastName,
       email: supabaseUser.email || '',
-      role: supabaseUser.user_metadata?.role || 'homeowner',
+      role: meta.role || 'homeowner',
     });
   };
 

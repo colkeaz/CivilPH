@@ -10,6 +10,7 @@ import CheckoutPage from './pages/CheckoutPage';
 import ReportsPage from './pages/ReportsPage';
 import VerificationQueue from './pages/admin/VerificationQueue';
 import ReferencePage from './pages/ReferencePage';
+import AuthCallback from './pages/AuthCallback';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/reports" element={<ReportsPage />} />
         <Route path="/reference" element={<ReferencePage />} />
+        <Route path="/auth/callback" element={<AuthCallback />} />
         <Route path="/admin/verify" element={<VerificationQueue />} />
       </Routes>
     </div>
