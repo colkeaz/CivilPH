@@ -5,7 +5,7 @@ import Footer from '../components/Footer';
 import BookingCalendar from '../components/BookingCalendar';
 import {
   MapPin, Video, CheckCircle2, ChevronRight, ChevronLeft,
-  Calendar, FileText, ArrowRight, ShieldCheck
+  Calendar, FileText, ArrowRight, ShieldCheck, ClipboardList, FileQuestion
 } from 'lucide-react';
 import { mockEngineers } from '../data/engineers';
 
@@ -29,11 +29,18 @@ const BookingPage = () => {
     (step === 2 && (!selectedDate || !selectedTime)) ||
     (step === 3 && consultationType === 'onsite_inspection' && !address);
 
+  const priceMap: Record<string, number> = {
+    onsite_inspection: 2500,
+    online_consultation: 1500,
+    design_review: 3000,
+    quotation_request: 800,
+  };
+
   const handleNext = () => {
     if (isNextDisabled) return;
     if (step === 3) {
-      navigate('/checkout', {
-        state: { engineerId, consultationType, selectedDate, selectedTime, address, notes }
+    navigate('/checkout', {
+        state: { engineerId, consultationType, selectedDate, selectedTime, address, notes, price: priceMap[consultationType] || 2500 }
       });
     } else {
       setStep(s => s + 1);
@@ -56,6 +63,22 @@ const BookingPage = () => {
       desc: '1-hour video call to review blueprints or discuss concerns.',
       price: 'PHP 1,500',
       badge: null,
+    },
+    {
+      id: 'design_review',
+      icon: <ClipboardList size={24} />,
+      title: 'Design Review',
+      desc: 'Engineer reviews your architectural or structural plans and provides compliance feedback.',
+      price: 'PHP 3,000',
+      badge: null,
+    },
+    {
+      id: 'quotation_request',
+      icon: <FileQuestion size={24} />,
+      title: 'Quotation Request',
+      desc: 'Get a formal cost estimate for your construction or retrofitting project.',
+      price: 'PHP 800',
+      badge: 'Quick & Easy',
     },
   ];
 

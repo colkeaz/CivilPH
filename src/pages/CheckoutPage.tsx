@@ -4,7 +4,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import {
   CheckCircle, CreditCard, Smartphone, Lock, ChevronLeft,
-  MapPin, Video, Calendar, Clock, ShieldCheck, ArrowRight
+  MapPin, Video, Calendar, Clock, ShieldCheck, ArrowRight, Banknote
 } from 'lucide-react';
 import { mockEngineers } from '../data/engineers';
 
@@ -12,7 +12,7 @@ const CheckoutPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const {
-    engineerId, consultationType, selectedDate, selectedTime, address, notes
+    engineerId, consultationType, selectedDate, selectedTime, address, notes, price: passedPrice
   } = location.state || {};
 
   const engineer = mockEngineers.find(e => e.id === Number(engineerId));
@@ -21,10 +21,22 @@ const CheckoutPage = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const price = consultationType === 'onsite_inspection' ? 2500 : 1500;
+  const priceMap: Record<string, number> = {
+    onsite_inspection: 2500,
+    online_consultation: 1500,
+    design_review: 3000,
+    quotation_request: 800,
+  };
+  const price = passedPrice || priceMap[consultationType] || 1500;
   const serviceFee = 150;
   const total = price + serviceFee;
-  const serviceName = consultationType === 'onsite_inspection' ? 'On-site Inspection' : 'Online Consultation';
+  const serviceNameMap: Record<string, string> = {
+    onsite_inspection: 'On-site Inspection',
+    online_consultation: 'Online Consultation',
+    design_review: 'Design Review',
+    quotation_request: 'Quotation Request',
+  };
+  const serviceName = serviceNameMap[consultationType] || consultationType;
 
   const handlePayment = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -104,6 +116,11 @@ const CheckoutPage = () => {
       id: 'qrph',
       label: 'QR Ph',
       icon: <Smartphone size={22} className="text-gray-500" />,
+    },
+    {
+      id: 'cash',
+      label: 'Cash (Pay on Appointment)',
+      icon: <Banknote size={22} className="text-gray-500" />,
     },
   ];
 
