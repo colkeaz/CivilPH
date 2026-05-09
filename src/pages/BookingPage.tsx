@@ -5,10 +5,8 @@ import Footer from '../components/Footer';
 import BookingCalendar from '../components/BookingCalendar';
 import {
   MapPin, Video, CheckCircle2, ChevronRight, ChevronLeft,
-  Calendar, FileText, ArrowRight, ShieldCheck, ClipboardList, FileQuestion
+  Calendar, FileText, ArrowRight, ShieldCheck, BadgeAlert
 } from 'lucide-react';
-// import { mockEngineers } from '../data/engineers';
-
 import { getEngineerById, getServicePackages } from '../services/engineerService';
 
 const STEPS = ['Service', 'Schedule', 'Details'];
@@ -27,6 +25,7 @@ const BookingPage = () => {
   const [selectedTime, setSelectedTime] = useState('');
   const [address, setAddress] = useState('');
   const [notes, setNotes] = useState('');
+  const [error, setError] = useState<string | null>(null); // FIX: Added error state
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,8 +41,9 @@ const BookingPage = () => {
 
         const packages = await getServicePackages(engineerId);
         setServicePackages(packages);
-      } catch (err) {
+      } catch (err: any) {
         console.error('Failed to fetch booking data:', err);
+        setError(err.message || 'Failed to load booking details. Please try again.'); // FIX: Set error state
       } finally {
         setLoading(false);
       }
@@ -51,9 +51,17 @@ const BookingPage = () => {
     fetchData();
   }, [engineerId]);
 
+  // FIX: Added isDateInPast check
+  const isDateInPast = (dateStr: string) => {
+    if (!dateStr) return false;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return new Date(dateStr) < today;
+  };
+
   const isNextDisabled =
     (step === 1 && !selectedPackageId) ||
-    (step === 2 && (!selectedDate || !selectedTime)) ||
+    (step === 2 && (!selectedDate || !selectedTime || isDateInPast(selectedDate))) ||
     (step === 3 && consultationType === 'onsite_inspection' && !address);
 
   const handleNext = () => {
@@ -77,40 +85,7 @@ const BookingPage = () => {
     }
   };
 
-  const serviceOptions = [
-    {
-      id: 'onsite_inspection',
-      icon: <MapPin size={24} />,
-      title: 'On-site Inspection',
-      desc: 'Visual assessment of existing structures at your location.',
-      price: 'PHP 2,500',
-      badge: 'Most Popular',
-    },
-    {
-      id: 'online_consultation',
-      icon: <Video size={24} />,
-      title: 'Online Consultation',
-      desc: '1-hour video call to review blueprints or discuss concerns.',
-      price: 'PHP 1,500',
-      badge: null,
-    },
-    {
-      id: 'design_review',
-      icon: <ClipboardList size={24} />,
-      title: 'Design Review',
-      desc: 'Engineer reviews your architectural or structural plans and provides compliance feedback.',
-      price: 'PHP 3,000',
-      badge: null,
-    },
-    {
-      id: 'quotation_request',
-      icon: <FileQuestion size={24} />,
-      title: 'Quotation Request',
-      desc: 'Get a formal cost estimate for your construction or retrofitting project.',
-      price: 'PHP 800',
-      badge: 'Quick & Easy',
-    },
-  ];
+  // const serviceOptions = [ ... removed unused local ... ]
 
   return (
     <div className="bg-[#f8fafd] min-h-screen flex flex-col font-sans">
@@ -129,6 +104,14 @@ const BookingPage = () => {
               Back to Profile
             </Link>
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">Book a Consultation</h1>
+            
+            {error && (
+              <div className="bg-red-50 border border-red-100 text-red-600 px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-3 mb-6">
+                <div className="w-2 h-2 bg-red-600 rounded-full animate-pulse" />
+                {error}
+              </div>
+            )}
+
             {engineer ? (
               <p className="text-gray-500 text-lg flex items-center gap-2">
                 with
@@ -230,11 +213,19 @@ const BookingPage = () => {
                   onTimeSelect={setSelectedTime}
                 />
                 {selectedDate && selectedTime && (
-                  <div className="mt-6 flex items-center gap-3 bg-[#006574]/5 border border-[#006574]/20 rounded-xl px-5 py-4">
-                    <Calendar size={20} className="text-[#006574] flex-shrink-0" />
-                    <p className="text-sm font-semibold text-gray-800">
-                      Scheduled for <span className="text-[#006574]">{selectedDate}</span> at <span className="text-[#006574]">{selectedTime}</span>
-                    </p>
+                  <div className="mt-6 space-y-3">
+                    {isDateInPast(selectedDate) && (
+                      <div className="flex items-center gap-3 bg-red-50 border border-red-100 rounded-xl px-5 py-4 text-red-600">
+                        <BadgeAlert size={20} className="flex-shrink-0" />
+                        <p className="text-sm font-bold">Selected date is in the past. Please pick a future date.</p>
+                      </div>
+                    )}
+                    <div className={`flex items-center gap-3 border rounded-xl px-5 py-4 ${isDateInPast(selectedDate) ? 'bg-gray-50 border-gray-100 opacity-50' : 'bg-[#006574]/5 border-[#006574]/20'}`}>
+                      <Calendar size={20} className={isDateInPast(selectedDate) ? 'text-gray-400' : 'text-[#006574]'} />
+                      <p className={`text-sm font-semibold ${isDateInPast(selectedDate) ? 'text-gray-500' : 'text-gray-800'}`}>
+                        Scheduled for <span className={isDateInPast(selectedDate) ? '' : 'text-[#006574]'}>{selectedDate}</span> at <span className={isDateInPast(selectedDate) ? '' : 'text-[#006574]'}>{selectedTime}</span>
+                      </p>
+                    </div>
                   </div>
                 )}
               </div>

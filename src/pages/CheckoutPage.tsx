@@ -11,6 +11,7 @@ import {
 import { useAuth } from '../store/AuthContext';
 import { getEngineerById } from '../services/engineerService';
 import { createAppointment } from '../services/bookingService';
+import { supabase } from '../utils/supabaseClient';
 
 const CheckoutPage = () => {
   const location = useLocation();
@@ -25,25 +26,37 @@ const CheckoutPage = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
+  const [verifiedPrice, setVerifiedPrice] = useState<number | null>(null); // FIX: Added verifiedPrice state
   useEffect(() => {
-    const fetchEngineer = async () => {
-      if (!engineerId) return;
+    const fetchData = async () => {
+      if (!engineerId || !selectedPackageId) return;
       try {
+        // 1. Fetch Engineer
         const engData = await getEngineerById(engineerId);
         setEngineer({
           name: `${engData.first_name} ${engData.last_name}`,
           title: engData.engineers.title,
           avatar: engData.avatar_url || 'https://via.placeholder.com/150',
         });
-      } catch (err) {
-        console.error('Failed to fetch engineer:', err);
+
+        // 2. FIX: Verify Price from Server
+        const { data, error } = await supabase
+          .from('service_packages')
+          .select('price')
+          .eq('id', selectedPackageId)
+          .single();
+
+        if (error) throw error;
+        setVerifiedPrice(data.price);
+      } catch (err: any) {
+        console.error('Failed to fetch checkout data:', err);
+        setError('Failed to verify service details. Please try again.');
       }
     };
-    fetchEngineer();
-  }, [engineerId]);
+    fetchData();
+  }, [engineerId, selectedPackageId]);
 
-  const price = passedPrice || 1500;
+  const price = verifiedPrice !== null ? verifiedPrice : (passedPrice || 1500); // FIX: Prioritize verifiedPrice
   const serviceFee = 150;
   const total = price + serviceFee;
   const serviceNameMap: Record<string, string> = {

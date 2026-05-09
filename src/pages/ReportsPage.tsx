@@ -9,6 +9,8 @@ import {
 import { useAuth } from '../store/AuthContext';
 import { getReports, updateReportStatus } from '../services/bookingService';
 
+import Toast from '../components/Toast';
+
 const STATUS_CONFIG: Record<string, { label: string; color: string; icon: React.ReactNode }> = {
   submitted: {
     label: 'Submitted',
@@ -32,6 +34,8 @@ const ReportsPage = () => {
   const [reports, setReports] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedReport, setSelectedReport] = useState<any | null>(null);
+  const [isAcknowledging, setIsAcknowledging] = useState(false); // FIX: Added isAcknowledging state
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null); // FIX: Added toast state
 
   useEffect(() => {
     const fetchReports = async () => {
@@ -61,12 +65,17 @@ const ReportsPage = () => {
   }, [user]);
 
   const handleAcknowledge = async (id: string) => {
+    setIsAcknowledging(true); // FIX: Set loading state
     try {
       await updateReportStatus(id, 'acknowledged');
       setReports(prev => prev.map(r => r.id === id ? { ...r, status: 'acknowledged' } : r));
       setSelectedReport(prev => prev && prev.id === id ? { ...prev, status: 'acknowledged' } : prev);
+      setToast({ message: 'Report acknowledged successfully.', type: 'success' }); // FIX: Show success toast
     } catch (err) {
       console.error('Failed to acknowledge report:', err);
+      setToast({ message: 'Failed to acknowledge report. Please try again.', type: 'error' }); // FIX: Show error toast
+    } finally {
+      setIsAcknowledging(false); // FIX: Reset loading state
     }
   };
 
@@ -190,9 +199,15 @@ const ReportsPage = () => {
                     <div className="mt-8 pt-6 border-t border-gray-100 flex items-center gap-4">
                       <button
                         onClick={() => handleAcknowledge(selectedReport.id)}
-                        className="flex items-center gap-2 bg-[#006574] text-white font-bold px-6 py-3 rounded-xl hover:bg-[#004e5a] transition-all shadow-lg shadow-[#006574]/15"
+                        disabled={isAcknowledging} // FIX: Disable while processing
+                        className="flex items-center gap-2 bg-[#006574] text-white font-bold px-6 py-3 rounded-xl hover:bg-[#004e5a] transition-all shadow-lg shadow-[#006574]/15 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
-                        <CheckCircle2 size={16} /> Acknowledge Receipt
+                        {isAcknowledging ? (
+                          <div className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+                        ) : (
+                          <CheckCircle2 size={16} />
+                        )}
+                        {isAcknowledging ? 'Acknowledging...' : 'Acknowledge Receipt'}
                       </button>
                       <p className="text-xs text-gray-400">Tap to confirm you've reviewed this report.</p>
                     </div>
@@ -214,6 +229,13 @@ const ReportsPage = () => {
       </main>
 
       <Footer />
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
     </div>
   );
 };

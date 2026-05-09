@@ -102,13 +102,11 @@ BEGIN
     new.raw_user_meta_data->>'firstName',
     new.raw_user_meta_data->>'lastName',
     new.raw_user_meta_data->>'phone',
-    COALESCE(new.raw_user_meta_data->>'role', 'homeowner')
+    'homeowner' -- FIX: Hardcoded to homeowner to prevent role escalation via signup metadata
   );
   
-  -- If the role is engineer, also create an entry in engineers table
-  IF (new.raw_user_meta_data->>'role' = 'engineer') THEN
-    INSERT INTO public.engineers (id) VALUES (new.id);
-  END IF;
+  -- If the role is engineer, it must be updated manually or via a secure admin process
+  -- For now, we only auto-create homeowners from public signup
   
   RETURN new;
 END;
