@@ -157,29 +157,27 @@ UPDATE public.engineers SET
   portfolio_list = '[{"title": "Pearl Farm Resort Expansion", "description": "Structural inspection and compliance certification for new resort facilities.", "image": "https://images.unsplash.com/photo-1439066615861-d1af74d74000?auto=format&fit=crop&q=80&w=800"}]'::jsonb
 WHERE id = '99999999-9999-9999-9999-999999999999';
 
--- 4. Delete old packages just in case to prevent duplicates on re-run
-DELETE FROM public.service_packages WHERE engineer_id IN (
-  '11111111-1111-1111-1111-111111111111', '22222222-2222-2222-2222-222222222222', '33333333-3333-3333-3333-333333333333',
-  '44444444-4444-4444-4444-444444444444', '55555555-5555-5555-5555-555555555555', '66666666-6666-6666-6666-666666666666',
-  '77777777-7777-7777-7777-777777777777', '88888888-8888-8888-8888-888888888888', '99999999-9999-9999-9999-999999999999'
-);
-
--- 5. Insert Service Packages for ALL engineers so BookingPage works
+-- 4. Safely Insert Service Packages for ALL engineers so BookingPage works
+-- We use NOT EXISTS to avoid duplicates and prevent breaking foreign key constraints on existing appointments
 INSERT INTO public.service_packages (engineer_id, name, description, price, consultation_type)
 SELECT id, 'On-site Inspection', 'Visual assessment of existing structures at your location.', 2500, 'onsite_inspection'
-FROM public.engineers;
+FROM public.engineers e
+WHERE NOT EXISTS (SELECT 1 FROM public.service_packages sp WHERE sp.engineer_id = e.id AND sp.consultation_type = 'onsite_inspection');
 
 INSERT INTO public.service_packages (engineer_id, name, description, price, consultation_type)
 SELECT id, 'Online Consultation', '1-hour video call to review blueprints or discuss concerns.', 1500, 'online_consultation'
-FROM public.engineers;
+FROM public.engineers e
+WHERE NOT EXISTS (SELECT 1 FROM public.service_packages sp WHERE sp.engineer_id = e.id AND sp.consultation_type = 'online_consultation');
 
 INSERT INTO public.service_packages (engineer_id, name, description, price, consultation_type)
 SELECT id, 'Design Review', 'Engineer reviews your architectural or structural plans and provides compliance feedback.', 3000, 'design_review'
-FROM public.engineers;
+FROM public.engineers e
+WHERE NOT EXISTS (SELECT 1 FROM public.service_packages sp WHERE sp.engineer_id = e.id AND sp.consultation_type = 'design_review');
 
 INSERT INTO public.service_packages (engineer_id, name, description, price, consultation_type)
 SELECT id, 'Quotation Request', 'Get a formal cost estimate for your construction or retrofitting project.', 800, 'quotation_request'
-FROM public.engineers;
+FROM public.engineers e
+WHERE NOT EXISTS (SELECT 1 FROM public.service_packages sp WHERE sp.engineer_id = e.id AND sp.consultation_type = 'quotation_request');
 
 -- 6. Insert Mock Reviews
 DELETE FROM public.reviews;
