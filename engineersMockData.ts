@@ -1,3 +1,4 @@
+export const seedEngineersSQL = `
 -- Run this script in your Supabase SQL Editor to seed the database with the mock engineers.
 -- It safely creates users in auth.users (triggering profile/engineer creation), 
 -- updates them with full details, and creates the necessary service packages.
@@ -159,3 +160,4 @@ FROM public.engineers;
 INSERT INTO public.service_packages (engineer_id, name, description, price, consultation_type)
 SELECT id, 'Quotation Request', 'Get a formal cost estimate for your construction or retrofitting project.', 800, 'quotation_request'
 FROM public.engineers;
+\`;
