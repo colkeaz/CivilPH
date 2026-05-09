@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../store/AuthContext';
 
 const Footer = () => {
+  const { isAuthenticated, user } = useAuth();
   return (
     <footer className="bg-white border-t border-gray-100 py-10">
       <div className="w-full max-w-[1280px] mx-auto px-6">
@@ -25,22 +27,30 @@ const Footer = () => {
           <div className="md:col-span-3">
             <h4 className="text-sm font-bold text-[#191c1e] mb-6 uppercase tracking-wider">Platform</h4>
             <ul className="space-y-3">
-              <li><Link to="/engineers" className="text-gray-500 hover:text-[#006574] transition-colors text-sm font-medium">Find an Engineer</Link></li>
-              <li><Link to="/reference" className="text-gray-500 hover:text-[#006574] transition-colors text-sm font-medium">Reference Guide (NSCP)</Link></li>
-              <li><Link to="/reports" className="text-gray-500 hover:text-[#006574] transition-colors text-sm font-medium">My Reports</Link></li>
-              <li><Link to="/engineers" className="text-gray-500 hover:text-[#006574] transition-colors text-sm font-medium">Join as Engineer</Link></li>
+              {isAuthenticated && (
+                <>
+                  <li><Link to="/engineers" className="text-gray-500 hover:text-[#006574] transition-colors text-sm font-medium">Find an Engineer</Link></li>
+                  <li><Link to="/reference" className="text-gray-500 hover:text-[#006574] transition-colors text-sm font-medium">Reference Guide (NSCP)</Link></li>
+                  <li><Link to="/reports" className="text-gray-500 hover:text-[#006574] transition-colors text-sm font-medium">My Reports</Link></li>
+                </>
+              )}
+              {!isAuthenticated && (
+                <li><Link to="/signup" className="text-gray-500 hover:text-[#006574] transition-colors text-sm font-medium">Join as Engineer</Link></li>
+              )}
             </ul>
           </div>
 
           {/* Admin & Trust */}
           <div className="md:col-span-4">
-            <h4 className="text-sm font-bold text-[#191c1e] mb-6 uppercase tracking-wider">Admin & Trust</h4>
+            <h4 className="text-sm font-bold text-[#191c1e] mb-6 uppercase tracking-wider">Trust & Legal</h4>
             <ul className="space-y-3">
-              <li>
-                <Link to="/admin/verify" className="text-gray-500 hover:text-[#006574] transition-colors text-sm font-medium">
-                  PRC Verification Queue
-                </Link>
-              </li>
+              {isAuthenticated && user?.role === 'admin' && (
+                <li>
+                  <Link to="/admin/verify" className="text-gray-500 hover:text-[#006574] transition-colors text-sm font-medium">
+                    PRC Verification Queue
+                  </Link>
+                </li>
+              )}
               <li><Link to="/privacy" className="text-gray-500 hover:text-[#006574] transition-colors text-sm font-medium">Privacy Policy</Link></li>
               <li><Link to="/terms" className="text-gray-500 hover:text-[#006574] transition-colors text-sm font-medium">Terms of Service</Link></li>
               <li><Link to="/verification-process" className="text-gray-500 hover:text-[#006574] transition-colors text-sm font-medium">Verification Process</Link></li>

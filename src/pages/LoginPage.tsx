@@ -178,6 +178,21 @@ const LoginPage = () => {
                 >
                   {isLoading ? "Logging in..." : "Log In"}
                 </button>
+
+                <div className="flex items-center gap-4 py-2">
+                  <div className="flex-1 h-px bg-gray-200"></div>
+                  <span className="text-gray-400 font-bold text-xs tracking-wider uppercase">Or continue with</span>
+                  <div className="flex-1 h-px bg-gray-200"></div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleGoogleLogin}
+                  className="w-full bg-white text-gray-700 font-bold py-4 rounded-2xl border-2 border-gray-200 hover:bg-gray-50 hover:border-gray-300 transition-all shadow-sm flex items-center justify-center gap-3"
+                >
+                  <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5" />
+                  Google
+                </button>
               </form>
 
               <p className="text-center text-gray-500 font-medium">
