@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
-    <footer className="bg-white border-t border-gray-100 py-14">
+    <footer className="bg-white border-t border-gray-100 py-10">
       <div className="w-full max-w-[1280px] mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-2">
 
           {/* Brand */}
           <div className="md:col-span-5 space-y-4">
@@ -41,21 +41,15 @@ const Footer = () => {
                   PRC Verification Queue
                 </Link>
               </li>
-              <li><Link to="#" className="text-gray-500 hover:text-[#006574] transition-colors text-sm font-medium">Privacy Policy</Link></li>
-              <li><Link to="#" className="text-gray-500 hover:text-[#006574] transition-colors text-sm font-medium">Terms of Service</Link></li>
-              <li><Link to="#" className="text-gray-500 hover:text-[#006574] transition-colors text-sm font-medium">Verification Process</Link></li>
+              <li><Link to="/privacy" className="text-gray-500 hover:text-[#006574] transition-colors text-sm font-medium">Privacy Policy</Link></li>
+              <li><Link to="/terms" className="text-gray-500 hover:text-[#006574] transition-colors text-sm font-medium">Terms of Service</Link></li>
+              <li><Link to="/verification-process" className="text-gray-500 hover:text-[#006574] transition-colors text-sm font-medium">Verification Process</Link></li>
             </ul>
           </div>
         </div>
 
         {/* Bottom divider */}
-        <div className="border-t border-gray-100 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-gray-400">Built for the Philippine construction industry · NSCP 2015 Compliant References</p>
-          <div className="flex items-center gap-4">
-            <Link to="/login" className="text-xs text-gray-400 hover:text-[#006574] transition-colors font-medium">Log In</Link>
-            <Link to="/signup" className="text-xs text-gray-400 hover:text-[#006574] transition-colors font-medium">Sign Up</Link>
-          </div>
-        </div>
+       
       </div>
     </footer>
   );

@@ -11,6 +11,9 @@ import ReportsPage from './pages/ReportsPage';
 import VerificationQueue from './pages/admin/VerificationQueue';
 import ReferencePage from './pages/ReferencePage';
 import AuthCallback from './pages/AuthCallback';
+import TermsPage from './pages/TermsPage';
+import PrivacyPage from './pages/PrivacyPage';
+import VerificationProcessPage from './pages/VerificationProcessPage';
 
 function App() {
   return (
@@ -27,6 +30,9 @@ function App() {
         <Route path="/reference" element={<ReferencePage />} />
         <Route path="/auth/callback" element={<AuthCallback />} />
         <Route path="/admin/verify" element={<VerificationQueue />} />
+        <Route path="/terms" element={<TermsPage />} />
+        <Route path="/privacy" element={<PrivacyPage />} />
+        <Route path="/verification-process" element={<VerificationProcessPage />} />
       </Routes>
     </div>
 

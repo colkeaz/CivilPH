@@ -60,7 +60,7 @@ const HeroSection = () => {
                   <Search className="text-gray-400 mr-3" size={20} />
                   <input 
                     className="w-full bg-transparent border-none focus:ring-0 text-gray-900 placeholder:text-gray-400 p-0 text-lg" 
-                    placeholder="Specialty (e.g., Structural)" 
+                    placeholder="Specialty" 
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}

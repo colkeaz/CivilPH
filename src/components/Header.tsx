@@ -62,15 +62,7 @@ const Header = () => {
         <div className="hidden md:flex items-center gap-6">
           {isAuthenticated ? (
             <div className="flex items-center gap-4">
-              {/* My Reports quick link */}
-              <Link
-                to="/reports"
-                className={`flex items-center gap-1.5 text-sm font-medium transition-colors hover:text-[#006574] ${
-                  location.pathname === '/reports' ? 'text-[#006574]' : 'text-gray-600'
-                }`}
-              >
-                <FileText size={15} /> My Reports
-              </Link>
+             
 
               {/* User dropdown */}
               <div className="relative" ref={dropdownRef}>

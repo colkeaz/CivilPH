@@ -138,9 +138,7 @@ const ReportsPage = () => {
                         </span>
                       </div>
                     </div>
-                    <button className="flex-shrink-0 flex items-center gap-2 text-sm font-bold text-[#006574] border border-[#006574]/30 px-4 py-2 rounded-xl hover:bg-[#006574]/5 transition-all">
-                      <Download size={15} /> Download PDF
-                    </button>
+                    
                   </div>
 
                   <hr className="border-gray-100 mb-6" />

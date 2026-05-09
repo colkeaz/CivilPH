@@ -1,11 +1,24 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import HeroSection from '../features/landing/HeroSection';
 import WhyChooseSection from '../features/landing/WhyChooseSection';
 import Footer from '../components/Footer';
+import { useAuth } from '../store/AuthContext';
+import { X } from 'lucide-react';
 
 const LandingPage = () => {
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+
+  const handleApplyClick = () => {
+    if (isAuthenticated) {
+      setShowModal(true);
+    } else {
+      navigate('/signup');
+    }
+  };
   return (
     <div className="bg-background text-on-surface font-body-md antialiased min-h-screen flex flex-col">
       <Header />
@@ -70,11 +83,54 @@ const LandingPage = () => {
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Are you a Licensed Civil Engineer?</h2>
             <p className="text-xl text-gray-400 mb-12 leading-relaxed">Join an elite network of professionals. Expand your practice, connect with high-intent clients, and manage your pipeline through our dedicated professional dashboard.</p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Link to="/signup" className="bg-[#a3eeff] text-[#001f25] font-bold px-12 py-5 rounded-xl hover:bg-[#76d4e7] transition-all shadow-lg shadow-[#a3eeff]/10">Apply as Engineer</Link>
+              <button onClick={handleApplyClick} className="bg-[#a3eeff] text-[#001f25] font-bold px-12 py-5 rounded-xl hover:bg-[#76d4e7] transition-all shadow-lg shadow-[#a3eeff]/10">Apply as Engineer</button>
               <button className="border border-gray-600 text-white font-bold px-12 py-5 rounded-xl hover:bg-white/5 transition-all">View Requirements</button>
             </div>
           </div>
         </section>
+
+        {showModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
+            <div className="bg-white rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
+              <div className="flex justify-between items-center p-6 border-b border-gray-100">
+                <h3 className="text-xl font-bold text-gray-900">Apply as Engineer</h3>
+                <button onClick={() => setShowModal(false)} className="text-gray-400 hover:text-gray-600 transition-colors">
+                  <X size={24} />
+                </button>
+              </div>
+              <div className="p-8 space-y-6">
+                <p className="text-gray-600 text-sm">Please provide your professional details to submit an application for verification.</p>
+                <div className="space-y-4 text-left">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">PRC License Number</label>
+                    <input type="text" className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#006574] transition-colors" placeholder="e.g. 0123456" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Years of Experience</label>
+                    <input type="number" className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#006574] transition-colors" placeholder="e.g. 5" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Primary Specialty</label>
+                    <select className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#006574] transition-colors bg-white">
+                      <option>Structural Engineering</option>
+                      <option>Geotechnical Engineering</option>
+                      <option>Construction Management</option>
+                      <option>Hydraulics & Water Resources</option>
+                    </select>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => {
+                    alert('Application submitted successfully! Your license is pending verification.');
+                    setShowModal(false);
+                  }}
+                  className="w-full bg-[#006574] text-white font-bold py-4 rounded-xl hover:bg-[#004e5a] transition-colors shadow-lg shadow-[#006574]/20 mt-4">
+                  Submit Application
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
 
 

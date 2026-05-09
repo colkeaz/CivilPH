@@ -109,9 +109,9 @@ const VerificationQueue = () => {
                       <div className="w-11 h-11 rounded-full bg-[#006574]/10 flex items-center justify-center text-[#006574] font-bold text-sm flex-shrink-0">
                         {eng.name.split(' ')[1]?.[0]}{eng.name.split(' ')[2]?.[0]}
                       </div>
-                      <div className="min-w-0">
-                        <p className="font-bold text-gray-900">{eng.name}</p>
-                        <p className="text-sm text-gray-400">{eng.email}</p>
+                      <div className="min-w-0 flex-1 pr-4">
+                        <p className="font-bold text-gray-900 truncate">{eng.name}</p>
+                        <p className="text-sm text-gray-400 truncate">{eng.email}</p>
                       </div>
                     </div>
 
