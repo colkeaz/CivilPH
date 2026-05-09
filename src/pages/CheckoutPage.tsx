@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -6,28 +6,44 @@ import {
   CheckCircle, CreditCard, Smartphone, Lock, ChevronLeft,
   MapPin, Video, Calendar, Clock, ShieldCheck, ArrowRight, Banknote
 } from 'lucide-react';
-import { mockEngineers } from '../data/engineers';
+// import { mockEngineers } from '../data/engineers';
+
+import { useAuth } from '../store/AuthContext';
+import { getEngineerById } from '../services/engineerService';
+import { createAppointment } from '../services/bookingService';
 
 const CheckoutPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const {
-    engineerId, consultationType, selectedDate, selectedTime, address, notes, price: passedPrice
+    engineerId, selectedPackageId, consultationType, selectedDate, selectedTime, address, notes, price: passedPrice
   } = location.state || {};
 
-  const engineer = mockEngineers.find(e => e.id === Number(engineerId));
-
+  const [engineer, setEngineer] = useState<any>(null);
   const [paymentMethod, setPaymentMethod] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const priceMap: Record<string, number> = {
-    onsite_inspection: 2500,
-    online_consultation: 1500,
-    design_review: 3000,
-    quotation_request: 800,
-  };
-  const price = passedPrice || priceMap[consultationType] || 1500;
+  useEffect(() => {
+    const fetchEngineer = async () => {
+      if (!engineerId) return;
+      try {
+        const engData = await getEngineerById(engineerId);
+        setEngineer({
+          name: `${engData.first_name} ${engData.last_name}`,
+          title: engData.engineers.title,
+          avatar: engData.avatar_url || 'https://via.placeholder.com/150',
+        });
+      } catch (err) {
+        console.error('Failed to fetch engineer:', err);
+      }
+    };
+    fetchEngineer();
+  }, [engineerId]);
+
+  const price = passedPrice || 1500;
   const serviceFee = 150;
   const total = price + serviceFee;
   const serviceNameMap: Record<string, string> = {
@@ -40,12 +56,34 @@ const CheckoutPage = () => {
 
   const handlePayment = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!paymentMethod) return;
+    if (!paymentMethod || !user) return;
+    
     setIsProcessing(true);
-    setTimeout(() => {
-      setIsProcessing(false);
+    setError(null);
+
+    try {
+      // 1. Save Appointment to Supabase
+      await createAppointment({
+        client_id: user.id,
+        engineer_id: engineerId,
+        service_package_id: selectedPackageId,
+        scheduled_date: selectedDate,
+        scheduled_time: selectedTime,
+        status: 'pending',
+        location_address: address,
+        notes: notes
+      });
+
+      // 2. Simulate payment delay
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
       setIsSuccess(true);
-    }, 2000);
+    } catch (err: any) {
+      console.error('Checkout failed:', err);
+      setError(err.message || 'Booking failed. Please try again.');
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   // ── Success screen ─────────────────────────────────────────────────────────
@@ -150,6 +188,14 @@ const CheckoutPage = () => {
             <div className="lg:col-span-3 space-y-6">
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
                 <h2 className="text-xl font-bold text-gray-900 mb-6">Select Payment Method</h2>
+                
+                {error && (
+                  <div className="bg-red-50 border border-red-100 text-red-600 px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-3 mb-6">
+                    <div className="w-2 h-2 bg-red-600 rounded-full animate-pulse" />
+                    {error}
+                  </div>
+                )}
+
                 <form onSubmit={handlePayment}>
                   <div className="space-y-3 mb-8">
                     {paymentOptions.map(opt => (

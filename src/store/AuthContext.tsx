@@ -1,4 +1,5 @@
-import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
+import type { ReactNode } from 'react';
 import { supabase } from '../utils/supabaseClient';
 import type { Session, User as SupabaseUser } from '@supabase/supabase-js';
 
@@ -26,17 +27,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log('AuthContext: Initializing Supabase Auth...');
     // Check active sessions and sets the user
     supabase.auth.getSession().then(({ data: { session } }) => {
+      console.log('AuthContext: Session fetched', session);
       setSession(session);
       if (session?.user) {
         mapSupabaseUserToUser(session.user);
       }
       setLoading(false);
+    }).catch(err => {
+      console.error('AuthContext: Session fetch error', err);
+      setLoading(false);
     });
 
     // Listen for changes on auth state (logged in, signed out, etc.)
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      console.log('AuthContext: Auth state changed', _event, session);
       setSession(session);
       if (session?.user) {
         mapSupabaseUserToUser(session.user);
@@ -90,7 +97,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       logout,
       isAuthenticated: !!user
     }}>
-      {!loading && children}
+      {loading ? (
+        <div className="min-h-screen flex items-center justify-center bg-[#f8fafd]">
+          <div className="w-12 h-12 border-4 border-[#088395] border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      ) : children}
     </AuthContext.Provider>
   );
 };

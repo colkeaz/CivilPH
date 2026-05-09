@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import {
@@ -6,28 +6,8 @@ import {
   User, CalendarDays, BadgeAlert, Wrench, DollarSign, X
 } from 'lucide-react';
 
-const mockReports = [
-  {
-    id: 'rep_1',
-    title: 'Structural Assessment — Residential House',
-    engineer: 'Engr. Juan Dela Cruz',
-    date: '2026-05-01',
-    status: 'submitted',
-    summary: 'Visual inspection conducted. Minor hairline cracks found on the second-floor firewall. No signs of structural compromise at this time.',
-    recommendations: 'Seal cracks with structural epoxy. Apply waterproofing membrane on the affected area. Monitor for 6 months and re-inspect.',
-    estimatedCost: 'PHP 5,000 – 10,000',
-  },
-  {
-    id: 'rep_2',
-    title: 'Design Review — Garage Extension',
-    engineer: 'Engr. Maria Santos',
-    date: '2026-04-15',
-    status: 'acknowledged',
-    summary: 'Reviewed proposed architectural plans for a single-storey garage extension adjacent to the main residence. Plans are structurally feasible with minor modifications.',
-    recommendations: 'Increase column sizes to 300mm x 300mm for added seismic resistance. Ensure proper footing depth of at least 600mm below grade level.',
-    estimatedCost: 'N/A — Consultation Only',
-  },
-];
+import { useAuth } from '../store/AuthContext';
+import { getReports, updateReportStatus } from '../services/bookingService';
 
 const STATUS_CONFIG: Record<string, { label: string; color: string; icon: React.ReactNode }> = {
   submitted: {
@@ -40,15 +20,54 @@ const STATUS_CONFIG: Record<string, { label: string; color: string; icon: React.
     color: 'bg-emerald-50 text-emerald-600 border-emerald-100',
     icon: <CheckCircle2 size={12} />,
   },
+  draft: {
+    label: 'Draft',
+    color: 'bg-gray-50 text-gray-600 border-gray-100',
+    icon: <FileText size={12} />,
+  }
 };
 
 const ReportsPage = () => {
-  const [reports, setReports] = useState(mockReports);
-  const [selectedReport, setSelectedReport] = useState<typeof mockReports[0] | null>(null);
+  const { user } = useAuth();
+  const [reports, setReports] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedReport, setSelectedReport] = useState<any | null>(null);
 
-  const handleAcknowledge = (id: string) => {
-    setReports(prev => prev.map(r => r.id === id ? { ...r, status: 'acknowledged' } : r));
-    setSelectedReport(prev => prev && prev.id === id ? { ...prev, status: 'acknowledged' } : prev);
+  useEffect(() => {
+    const fetchReports = async () => {
+      if (!user) return;
+      try {
+        const data = await getReports(user.id, user.role as any);
+        const mapped = data.map((r: any) => ({
+          id: r.id,
+          title: r.title,
+          engineer: `${r.engineers.profiles.first_name} ${r.engineers.profiles.last_name}`,
+          client: `${r.profiles.first_name} ${r.profiles.last_name}`,
+          date: new Date(r.created_at).toLocaleDateString(),
+          status: r.status,
+          summary: r.summary,
+          recommendations: r.recommendations,
+          estimatedCost: r.estimated_cost_min ? `PHP ${r.estimated_cost_min.toLocaleString()} – ${r.estimated_cost_max.toLocaleString()}` : 'N/A',
+        }));
+        setReports(mapped);
+      } catch (err) {
+        console.error('Failed to fetch reports:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchReports();
+  }, [user]);
+
+  const handleAcknowledge = async (id: string) => {
+    try {
+      await updateReportStatus(id, 'acknowledged');
+      setReports(prev => prev.map(r => r.id === id ? { ...r, status: 'acknowledged' } : r));
+      setSelectedReport(prev => prev && prev.id === id ? { ...prev, status: 'acknowledged' } : prev);
+    } catch (err) {
+      console.error('Failed to acknowledge report:', err);
+    }
   };
 
   return (

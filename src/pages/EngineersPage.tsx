@@ -6,16 +6,9 @@ import {
   Search, MapPin, Star, Briefcase, ChevronLeft, ChevronRight,
   ShieldCheck, CheckCircle2, ChevronDown, X
 } from 'lucide-react';
-import { mockEngineers } from '../data/engineers';
+import { getEngineers, EngineerProfile } from '../services/engineerService';
 
 const ENGINEERS_PER_PAGE = 6;
-
-// All unique locations and specialties derived from data
-const ALL_LOCATIONS = ['Any Location', ...Array.from(new Set(mockEngineers.map(e => e.city))).sort()];
-const ALL_SPECIALTIES = ['All Specializations', ...Array.from(
-  new Set(mockEngineers.flatMap(e => e.specialties))
-).sort()];
-const RATING_OPTIONS = ['Any Rating', '4.8 +', '4.5 +', '4.0 +'];
 
 // Custom dropdown component
 interface DropdownProps {
@@ -74,6 +67,8 @@ const CustomDropdown: React.FC<DropdownProps> = ({ label, options, value, onChan
 };
 
 const EngineersPage = () => {
+  const [engineers, setEngineers] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [location, setLocation] = useState('Any Location');
   const [specialty, setSpecialty] = useState('All Specializations');
@@ -85,6 +80,46 @@ const EngineersPage = () => {
   const [appliedLocation, setAppliedLocation] = useState('Any Location');
   const [appliedSpecialty, setAppliedSpecialty] = useState('All Specializations');
   const [appliedRating, setAppliedRating] = useState('Any Rating');
+
+  useEffect(() => {
+    const fetchEngineers = async () => {
+      try {
+        const data = await getEngineers();
+        const mapped = data.map((item: any) => ({
+          id: item.id,
+          name: `${item.first_name} ${item.last_name}`,
+          title: item.engineers.title,
+          city: item.engineers.city,
+          experience: `${item.engineers.years_experience} Years`,
+          rating: Number(item.engineers.rating),
+          reviewCount: item.engineers.review_count,
+          verified: item.engineers.verification_status === 'verified',
+          specialties: item.engineers.specialties || [],
+          avatar: item.avatar_url || 'https://via.placeholder.com/150',
+        }));
+        setEngineers(mapped);
+      } catch (err) {
+        console.error('Failed to fetch engineers:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEngineers();
+  }, []);
+
+  // Derived filter options
+  const ALL_LOCATIONS = useMemo(() => 
+    ['Any Location', ...Array.from(new Set(engineers.map(e => e.city).filter(Boolean)))].sort(),
+    [engineers]
+  );
+  
+  const ALL_SPECIALTIES = useMemo(() => 
+    ['All Specializations', ...Array.from(new Set(engineers.flatMap(e => e.specialties))).sort()],
+    [engineers]
+  );
+
+  const RATING_OPTIONS = ['Any Rating', '4.8 +', '4.5 +', '4.0 +'];
 
   const applyFilters = () => {
     setAppliedSearch(searchTerm);
@@ -106,20 +141,17 @@ const EngineersPage = () => {
     setCurrentPage(1);
   };
 
-  const hasActiveFilters = appliedSearch || appliedLocation !== 'Any Location' ||
-    appliedSpecialty !== 'All Specializations' || appliedRating !== 'Any Rating';
-
   const filteredEngineers = useMemo(() => {
-    return mockEngineers.filter(eng => {
+    return engineers.filter(eng => {
       const matchSearch = !appliedSearch ||
         eng.name.toLowerCase().includes(appliedSearch.toLowerCase()) ||
         eng.title.toLowerCase().includes(appliedSearch.toLowerCase()) ||
-        eng.specialties.some(s => s.toLowerCase().includes(appliedSearch.toLowerCase()));
+        eng.specialties.some((s: string) => s.toLowerCase().includes(appliedSearch.toLowerCase()));
 
       const matchLocation = appliedLocation === 'Any Location' || eng.city === appliedLocation;
 
       const matchSpecialty = appliedSpecialty === 'All Specializations' ||
-        eng.specialties.some(s => s.toLowerCase().includes(appliedSpecialty.toLowerCase()));
+        eng.specialties.some((s: string) => s.toLowerCase().includes(appliedSpecialty.toLowerCase()));
 
       let matchRating = true;
       if (appliedRating === '4.8 +') matchRating = eng.rating >= 4.8;
@@ -128,7 +160,7 @@ const EngineersPage = () => {
 
       return matchSearch && matchLocation && matchSpecialty && matchRating;
     });
-  }, [appliedSearch, appliedLocation, appliedSpecialty, appliedRating]);
+  }, [engineers, appliedSearch, appliedLocation, appliedSpecialty, appliedRating]);
 
   const totalPages = Math.ceil(filteredEngineers.length / ENGINEERS_PER_PAGE);
   const paginatedEngineers = filteredEngineers.slice(

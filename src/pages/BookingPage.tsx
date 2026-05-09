@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -7,7 +7,9 @@ import {
   MapPin, Video, CheckCircle2, ChevronRight, ChevronLeft,
   Calendar, FileText, ArrowRight, ShieldCheck, ClipboardList, FileQuestion
 } from 'lucide-react';
-import { mockEngineers } from '../data/engineers';
+// import { mockEngineers } from '../data/engineers';
+
+import { getEngineerById, getServicePackages } from '../services/engineerService';
 
 const STEPS = ['Service', 'Schedule', 'Details'];
 
@@ -15,32 +17,60 @@ const BookingPage = () => {
   const { engineerId } = useParams();
   const navigate = useNavigate();
 
-  const engineer = mockEngineers.find(e => e.id === Number(engineerId));
-
+  const [engineer, setEngineer] = useState<any>(null);
+  const [servicePackages, setServicePackages] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [step, setStep] = useState(1);
+  const [selectedPackageId, setSelectedPackageId] = useState<number | null>(null);
   const [consultationType, setConsultationType] = useState('');
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
   const [address, setAddress] = useState('');
   const [notes, setNotes] = useState('');
 
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!engineerId) return;
+      try {
+        const engData = await getEngineerById(engineerId);
+        setEngineer({
+          id: engData.id,
+          name: `${engData.first_name} ${engData.last_name}`,
+          avatar: engData.avatar_url || 'https://via.placeholder.com/150',
+          verified: engData.engineers.verification_status === 'verified',
+        });
+
+        const packages = await getServicePackages(engineerId);
+        setServicePackages(packages);
+      } catch (err) {
+        console.error('Failed to fetch booking data:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [engineerId]);
+
   const isNextDisabled =
-    (step === 1 && !consultationType) ||
+    (step === 1 && !selectedPackageId) ||
     (step === 2 && (!selectedDate || !selectedTime)) ||
     (step === 3 && consultationType === 'onsite_inspection' && !address);
-
-  const priceMap: Record<string, number> = {
-    onsite_inspection: 2500,
-    online_consultation: 1500,
-    design_review: 3000,
-    quotation_request: 800,
-  };
 
   const handleNext = () => {
     if (isNextDisabled) return;
     if (step === 3) {
-    navigate('/checkout', {
-        state: { engineerId, consultationType, selectedDate, selectedTime, address, notes, price: priceMap[consultationType] || 2500 }
+      const selectedPackage = servicePackages.find(p => p.id === selectedPackageId);
+      navigate('/checkout', {
+        state: { 
+          engineerId, 
+          selectedPackageId,
+          consultationType, 
+          selectedDate, 
+          selectedTime, 
+          address, 
+          notes, 
+          price: selectedPackage?.price || 0 
+        }
       });
     } else {
       setStep(s => s + 1);
@@ -150,39 +180,42 @@ const BookingPage = () => {
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">Select Consultation Type</h2>
                 <p className="text-gray-500 mb-8">Choose the service that best fits your project needs.</p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  {serviceOptions.map(opt => (
+                  {servicePackages.map(opt => (
                     <button
                       key={opt.id}
                       type="button"
-                      onClick={() => setConsultationType(opt.id)}
+                      onClick={() => {
+                        setSelectedPackageId(opt.id);
+                        setConsultationType(opt.consultation_type);
+                      }}
                       className={`relative text-left p-6 rounded-2xl border-2 transition-all group ${
-                        consultationType === opt.id
+                        selectedPackageId === opt.id
                           ? 'border-[#006574] bg-[#006574]/5 shadow-md'
                           : 'border-gray-100 hover:border-[#006574]/40 hover:shadow-sm'
                       }`}
                     >
-                      {opt.badge && (
-                        <span className="absolute top-4 right-4 text-[10px] font-bold uppercase tracking-wider text-[#006574] bg-[#006574]/10 px-2.5 py-1 rounded-full">
-                          {opt.badge}
-                        </span>
-                      )}
                       <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-colors ${
-                        consultationType === opt.id ? 'bg-[#006574] text-white' : 'bg-gray-100 text-gray-500 group-hover:bg-[#006574]/10 group-hover:text-[#006574]'
+                        selectedPackageId === opt.id ? 'bg-[#006574] text-white' : 'bg-gray-100 text-gray-500 group-hover:bg-[#006574]/10 group-hover:text-[#006574]'
                       }`}>
-                        {opt.icon}
+                        {opt.consultation_type === 'onsite_inspection' ? <MapPin size={24} /> : <Video size={24} />}
                       </div>
-                      <h3 className="text-lg font-bold text-gray-900 mb-1">{opt.title}</h3>
-                      <p className="text-sm text-gray-500 mb-4 leading-relaxed">{opt.desc}</p>
-                      <p className={`text-lg font-bold ${consultationType === opt.id ? 'text-[#006574]' : 'text-gray-800'}`}>
-                        {opt.price}
+                      <h3 className="text-lg font-bold text-gray-900 mb-1">{opt.name}</h3>
+                      <p className="text-sm text-gray-500 mb-4 leading-relaxed">{opt.description}</p>
+                      <p className={`text-lg font-bold ${selectedPackageId === opt.id ? 'text-[#006574]' : 'text-gray-800'}`}>
+                        PHP {opt.price.toLocaleString()}
                       </p>
-                      {consultationType === opt.id && (
+                      {selectedPackageId === opt.id && (
                         <div className="absolute top-4 left-4 w-5 h-5 bg-[#006574] rounded-full flex items-center justify-center">
                           <CheckCircle2 size={12} className="text-white" />
                         </div>
                       )}
                     </button>
                   ))}
+                  {servicePackages.length === 0 && !loading && (
+                    <div className="col-span-full py-10 text-center bg-gray-50 rounded-2xl border border-dashed border-gray-200">
+                      <p className="text-gray-500">No service packages available for this engineer.</p>
+                    </div>
+                  )}
                 </div>
               </div>
             )}

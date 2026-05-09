@@ -17,17 +17,77 @@ import {
   AlertCircle,
   ChevronLeft
 } from 'lucide-react';
-import { mockEngineers } from '../data/engineers';
+import { getEngineerById, getServicePackages } from '../services/engineerService';
 
 const EngineerProfilePage = () => {
-   const navigate = useNavigate();
+  const navigate = useNavigate();
   const { id } = useParams();
-  
-  // Find the engineer based on the ID from the URL
-  const engineer = mockEngineers.find(eng => eng.id === Number(id));
+  const [engineer, setEngineer] = React.useState<any>(null);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState<string | null>(null);
+  const [servicePackages, setServicePackages] = React.useState<any[]>([]);
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      if (!id) return;
+      try {
+        const engData = await getEngineerById(id);
+        const mapped = {
+          id: engData.id,
+          name: `${engData.first_name} ${engData.last_name}`,
+          title: engData.engineers.title,
+          location: engData.engineers.city,
+          experience: `${engData.engineers.years_experience} Years`,
+          rating: Number(engData.engineers.rating),
+          reviewCount: engData.engineers.review_count,
+          verified: engData.engineers.verification_status === 'verified',
+          specializations: engData.engineers.specialties || [],
+          avatar: engData.avatar_url || 'https://via.placeholder.com/150',
+          about: engData.engineers.bio || 'No bio provided.',
+          license: engData.engineers.prc_license_number || 'N/A',
+          rate: 0, // Will be updated from service packages
+          // Mocking these for now as they are not in the basic schema yet
+          experienceList: [],
+          portfolio: [],
+          reviews: [],
+          responseTime: '2-4 hours',
+          projectsCompleted: 0,
+          languages: 'English, Filipino'
+        };
+        setEngineer(mapped);
+
+        const packages = await getServicePackages(id);
+        setServicePackages(packages);
+        if (packages.length > 0) {
+          setEngineer((prev: any) => ({ ...prev, rate: packages[0].price }));
+        }
+      } catch (err: any) {
+        setError(err.message || 'Failed to fetch engineer details');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="bg-[#f8fafd] min-h-screen flex flex-col font-sans">
+        <Header />
+        <main className="flex-grow flex items-center justify-center">
+          <div className="text-center">
+            <div className="w-16 h-16 border-4 border-[#006574] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-gray-500 font-medium">Loading profile...</p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   // Handle case where engineer is not found
-  if (!engineer) {
+  if (!engineer || error) {
     return (
       <div className="bg-[#f8fafd] min-h-screen flex flex-col font-sans">
         <Header />
@@ -37,7 +97,7 @@ const EngineerProfilePage = () => {
               <AlertCircle size={40} className="text-red-500" />
             </div>
             <h1 className="text-3xl font-bold text-gray-900">Engineer Not Found</h1>
-            <p className="text-gray-500">The profile for ID {id} was not found.</p>
+            <p className="text-gray-500">{error || `The profile for ID ${id} was not found.`}</p>
             <Link to="/engineers" className="inline-block bg-[#006574] text-white font-bold px-8 py-3 rounded-xl hover:bg-[#004e5a] transition-all">
               Back to Directory
             </Link>
