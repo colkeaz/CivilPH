@@ -95,11 +95,12 @@ export const getReports = async (userId: string, role: 'homeowner' | 'engineer')
       )
     `);
 
-  if (role === 'homeowner') {
-    query.eq('client_id', userId);
-  } else {
-    query.eq('engineer_id', userId);
-  }
+  // Removed user filtering so all mock reports are visible to anyone for the presentation
+  // if (role === 'homeowner') {
+  //   query.eq('client_id', userId);
+  // } else {
+  //   query.eq('engineer_id', userId);
+  // }
 
   const { data, error } = await query.order('created_at', { ascending: false });
 
