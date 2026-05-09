@@ -4,9 +4,9 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import {
   Search, MapPin, Star, Briefcase, ChevronLeft, ChevronRight,
-  ShieldCheck, CheckCircle2, ChevronDown, X
+  ShieldCheck, CheckCircle2, ChevronDown
 } from 'lucide-react';
-import { getEngineers, EngineerProfile } from '../services/engineerService';
+import { getEngineers } from '../services/engineerService';
 
 const ENGINEERS_PER_PAGE = 6;
 
@@ -68,7 +68,6 @@ const CustomDropdown: React.FC<DropdownProps> = ({ label, options, value, onChan
 
 const EngineersPage = () => {
   const [engineers, setEngineers] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [location, setLocation] = useState('Any Location');
   const [specialty, setSpecialty] = useState('All Specializations');
@@ -100,8 +99,6 @@ const EngineersPage = () => {
         setEngineers(mapped);
       } catch (err) {
         console.error('Failed to fetch engineers:', err);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -129,17 +126,7 @@ const EngineersPage = () => {
     setCurrentPage(1);
   };
 
-  const clearFilters = () => {
-    setSearchTerm('');
-    setLocation('Any Location');
-    setSpecialty('All Specializations');
-    setMinRating('Any Rating');
-    setAppliedSearch('');
-    setAppliedLocation('Any Location');
-    setAppliedSpecialty('All Specializations');
-    setAppliedRating('Any Rating');
-    setCurrentPage(1);
-  };
+
 
   const filteredEngineers = useMemo(() => {
     return engineers.filter(eng => {
@@ -330,7 +317,7 @@ const EngineersPage = () => {
                         </div>
 
                         <div className="flex flex-wrap justify-center gap-1.5 mb-8 min-h-[52px]">
-                          {eng.specialties.slice(0, 3).map((spec, i) => (
+                          {eng.specialties.slice(0, 3).map((spec: any, i: number) => (
                             <span
                               key={i}
                               className="bg-[#ebf5f7] text-[#006574] text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest"

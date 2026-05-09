@@ -7,9 +7,7 @@ import {
   Star, 
   Briefcase, 
   CheckCircle2, 
-  Share2, 
   Calendar, 
-  MessageSquare,
   Clock,
   Layers,
   Languages,
@@ -25,7 +23,7 @@ const EngineerProfilePage = () => {
   const [engineer, setEngineer] = React.useState<any>(null);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
-  const [servicePackages, setServicePackages] = React.useState<any[]>([]);
+  const [servicePackages, setServicePackages] = React.useState<any[]>([]); // @ts-ignore
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -48,7 +46,7 @@ const EngineerProfilePage = () => {
           rate: 0, // Will be updated from service packages
           experienceList: engData.engineers.experience_list || [],
           portfolio: engData.engineers.portfolio_list || [],
-          reviews: [],
+          reviews: [] as any[],
           responseTime: '2-4 hours',
           projectsCompleted: 0,
           languages: 'English, Filipino'
@@ -184,7 +182,7 @@ const EngineerProfilePage = () => {
               <section className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6">Professional Specializations</h2>
                 <div className="flex flex-wrap gap-3">
-                  {engineer.specializations?.map((spec, i) => (
+                  {engineer.specializations.map((spec: any, i: number) => (
                     <span key={i} className="bg-gray-100 text-gray-700 px-4 py-2 rounded-xl text-sm font-bold border border-gray-200">
                       {spec}
                     </span>
@@ -196,7 +194,7 @@ const EngineerProfilePage = () => {
               <section className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-8">Experience</h2>
                 <div className="space-y-10 relative before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-gray-100">
-                  {engineer.experienceList?.map((exp, i) => (
+                  {engineer.experienceList.map((exp: any, i: number) => (
                     <div key={i} className="relative pl-10">
                       <div className="absolute left-0 top-1.5 w-6 h-6 rounded-full bg-white border-4 border-[#006574] z-10"></div>
                       <div className="mb-1">
@@ -214,7 +212,7 @@ const EngineerProfilePage = () => {
                 <section className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
                   <h2 className="text-2xl font-bold text-gray-900 mb-8">Project Portfolio</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {engineer.portfolio.map((project, i) => (
+                    {engineer.portfolio.map((project: any, i: number) => (
                       <div key={i} className="group cursor-pointer">
                         <div className="relative rounded-2xl overflow-hidden mb-4 aspect-video">
                           <img 
@@ -242,7 +240,7 @@ const EngineerProfilePage = () => {
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {engineer.reviews?.map((rev, i) => (
+                  {engineer.reviews.map((rev: any, i: number) => (
                     <div key={i} className="bg-gray-50 rounded-2xl p-6 border border-gray-100">
                       <div className="flex justify-between items-start mb-4">
                         <div className="flex gap-1">

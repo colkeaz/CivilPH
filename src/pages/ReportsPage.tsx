@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import {
-  FileText, CheckCircle2, Clock, Download, ChevronRight,
-  User, CalendarDays, BadgeAlert, Wrench, DollarSign, X
+  FileText, CheckCircle2, Clock, 
+  User, CalendarDays, Wrench, DollarSign
 } from 'lucide-react';
 
 import { useAuth } from '../store/AuthContext';
@@ -32,7 +32,6 @@ const STATUS_CONFIG: Record<string, { label: string; color: string; icon: React.
 const ReportsPage = () => {
   const { user } = useAuth();
   const [reports, setReports] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
   const [selectedReport, setSelectedReport] = useState<any | null>(null);
   const [isAcknowledging, setIsAcknowledging] = useState(false); // FIX: Added isAcknowledging state
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null); // FIX: Added toast state
@@ -56,8 +55,6 @@ const ReportsPage = () => {
         setReports(mapped);
       } catch (err) {
         console.error('Failed to fetch reports:', err);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -68,8 +65,8 @@ const ReportsPage = () => {
     setIsAcknowledging(true); // FIX: Set loading state
     try {
       await updateReportStatus(id, 'acknowledged');
-      setReports(prev => prev.map(r => r.id === id ? { ...r, status: 'acknowledged' } : r));
-      setSelectedReport(prev => prev && prev.id === id ? { ...prev, status: 'acknowledged' } : prev);
+      setReports((prev: any[]) => prev.map(r => r.id === id ? { ...r, status: 'acknowledged' } : r));
+      setSelectedReport((prev: any) => prev && prev.id === id ? { ...prev, status: 'acknowledged' } : prev);
       setToast({ message: 'Report acknowledged successfully.', type: 'success' }); // FIX: Show success toast
     } catch (err) {
       console.error('Failed to acknowledge report:', err);
