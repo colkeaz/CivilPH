@@ -182,11 +182,33 @@ SELECT id, 'Quotation Request', 'Get a formal cost estimate for your constructio
 FROM public.engineers;
 
 -- 6. Insert Mock Reviews
-DELETE FROM public.reviews WHERE engineer_id IN (
-  '11111111-1111-1111-1111-111111111111', '22222222-2222-2222-2222-222222222222'
-);
+DELETE FROM public.reviews;
 
 INSERT INTO public.reviews (engineer_id, client_id, rating, comment, created_at) VALUES 
-('11111111-1111-1111-1111-111111111111', 'cccccccc-cccc-cccc-cccc-cccccccccccc', 5, 'Engr. Juan was instrumental in ensuring our residential project in Antipolo was structurally sound.', now() - interval '2 days'),
-('11111111-1111-1111-1111-111111111111', 'dddddddd-dddd-dddd-dddd-dddddddddddd', 4, 'We hired him for a commercial building audit. Very comprehensive report.', now() - interval '15 days'),
-('22222222-2222-2222-2222-222222222222', 'dddddddd-dddd-dddd-dddd-dddddddddddd', 5, 'Engr. Maria provided critical soil reports that saved our project from potential foundation failure.', now() - interval '30 days');
+-- Engineer 1
+('11111111-1111-1111-1111-111111111111', 'cccccccc-cccc-cccc-cccc-cccccccccccc', 5, 'Engr. Juan was instrumental in ensuring our residential project in Antipolo was structurally sound.', now() - interval '30 days'),
+('11111111-1111-1111-1111-111111111111', 'dddddddd-dddd-dddd-dddd-dddddddddddd', 5, 'We hired him for a commercial building audit. Very comprehensive report.', now() - interval '60 days'),
+
+-- Engineer 2
+('22222222-2222-2222-2222-222222222222', 'cccccccc-cccc-cccc-cccc-cccccccccccc', 5, 'Engr. Maria provided critical soil reports that saved our project from potential foundation failure.', now() - interval '15 days'),
+
+-- Engineer 3
+('33333333-3333-3333-3333-333333333333', 'dddddddd-dddd-dddd-dddd-dddddddddddd', 4, 'Engr. Antonio made sure our house was built exactly according to the plans.', now() - interval '10 days'),
+
+-- Engineer 4
+('44444444-4444-4444-4444-444444444444', 'cccccccc-cccc-cccc-cccc-cccccccccccc', 5, 'Engr. Sofia guided us through every step of our eco-home project. Knowledge is unmatched.', now() - interval '5 days'),
+
+-- Engineer 5
+('55555555-5555-5555-5555-555555555555', 'dddddddd-dddd-dddd-dddd-dddddddddddd', 5, 'Engr. Carlos delivered the bridge project 2 weeks ahead of schedule and under budget.', now() - interval '45 days'),
+
+-- Engineer 6
+('66666666-6666-6666-6666-666666666666', 'cccccccc-cccc-cccc-cccc-cccccccccccc', 5, 'Her seismic assessment was thorough and the retrofitting recommendations were practical and cost-effective.', now() - interval '20 days'),
+
+-- Engineer 7
+('77777777-7777-7777-7777-777777777777', 'dddddddd-dddd-dddd-dddd-dddddddddddd', 4, 'Mark delivered all structural plans ahead of schedule and accommodated last-minute design changes professionally.', now() - interval '25 days'),
+
+-- Engineer 8
+('88888888-8888-8888-8888-888888888888', 'cccccccc-cccc-cccc-cccc-cccccccccccc', 5, 'The flood incidents in our municipality reduced by 60% after Engr. Diane''s drainage plan was implemented.', now() - interval '40 days'),
+
+-- Engineer 9
+('99999999-9999-9999-9999-999999999999', 'dddddddd-dddd-dddd-dddd-dddddddddddd', 4, 'Paolo completed our compliance audit in 3 days and identified issues we had missed. Highly efficient.', now() - interval '12 days');
