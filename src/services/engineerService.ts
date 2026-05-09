@@ -17,6 +17,9 @@ export interface EngineerProfile {
     review_count: number;
     verification_status: string;
     is_featured: boolean;
+    prc_license_number?: string;
+    experience_list?: any[];
+    portfolio_list?: any[];
   };
 }
 
@@ -73,7 +76,9 @@ export const getEngineerById = async (id: string) => {
         review_count,
         verification_status,
         is_featured,
-        prc_license_number
+        prc_license_number,
+        experience_list,
+        portfolio_list
       )
     `)
     .eq('id', id)
@@ -95,6 +100,27 @@ export const getServicePackages = async (engineerId: string) => {
 
   if (error) {
     console.error('Error fetching service packages:', error);
+    throw error;
+  }
+
+  return data;
+};
+
+export const getEngineerReviews = async (engineerId: string) => {
+  const { data, error } = await supabase
+    .from('reviews')
+    .select(`
+      *,
+      profiles!reviews_client_id_fkey (
+        first_name,
+        last_name
+      )
+    `)
+    .eq('engineer_id', engineerId)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching engineer reviews:', error);
     throw error;
   }
 

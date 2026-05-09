@@ -14,7 +14,10 @@ VALUES
 ('66666666-6666-6666-6666-666666666666', '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'rachel@civilph.com', 'password123', now(), now(), now(), '{"provider":"email","providers":["email"]}', '{"firstName":"Rachel", "lastName":"Tan", "role":"engineer"}', now(), now(), '', '', '', ''),
 ('77777777-7777-7777-7777-777777777777', '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'mark@civilph.com', 'password123', now(), now(), now(), '{"provider":"email","providers":["email"]}', '{"firstName":"Mark", "lastName":"Villanueva", "role":"engineer"}', now(), now(), '', '', '', ''),
 ('88888888-8888-8888-8888-888888888888', '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'diane@civilph.com', 'password123', now(), now(), now(), '{"provider":"email","providers":["email"]}', '{"firstName":"Diane", "lastName":"Reyes", "role":"engineer"}', now(), now(), '', '', '', ''),
-('99999999-9999-9999-9999-999999999999', '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'paolo@civilph.com', 'password123', now(), now(), now(), '{"provider":"email","providers":["email"]}', '{"firstName":"Paolo", "lastName":"Garcia", "role":"engineer"}', now(), now(), '', '', '', '')
+('99999999-9999-9999-9999-999999999999', '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'paolo@civilph.com', 'password123', now(), now(), now(), '{"provider":"email","providers":["email"]}', '{"firstName":"Paolo", "lastName":"Garcia", "role":"engineer"}', now(), now(), '', '', '', ''),
+-- Mock Clients for Reviews
+('cccccccc-cccc-cccc-cccc-cccccccccccc', '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'client1@civilph.com', 'password123', now(), now(), now(), '{"provider":"email","providers":["email"]}', '{"firstName":"Maria", "lastName":"S.", "role":"homeowner"}', now(), now(), '', '', '', ''),
+('dddddddd-dddd-dddd-dddd-dddddddddddd', '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'client2@civilph.com', 'password123', now(), now(), now(), '{"provider":"email","providers":["email"]}', '{"firstName":"Robert", "lastName":"G.", "role":"homeowner"}', now(), now(), '', '', '', '')
 ON CONFLICT (id) DO NOTHING;
 
 -- 2. Update Profiles with Avatars
@@ -38,7 +41,9 @@ UPDATE public.engineers SET
   verification_status = 'verified', 
   rating = 4.9, 
   review_count = 42,
-  specialties = ARRAY['Structural Analysis', 'Seismic Retrofitting', 'Geotechnical Evaluation', 'Project Management', 'High-Rise Construction']
+  specialties = ARRAY['Structural Analysis', 'Seismic Retrofitting', 'Geotechnical Evaluation', 'Project Management', 'High-Rise Construction'],
+  experience_list = '[{"role": "Lead Structural Engineer", "company": "Mabuhay Builders Inc.", "period": "2018 - Present", "description": "Spearheading the structural design team for multiple 30+ story residential condominiums in BGC."}, {"role": "Senior Civil Engineer", "company": "Struktura Consult Corp.", "period": "2012 - 2018", "description": "Conducted comprehensive structural audits for older commercial buildings and designed seismic retrofitting solutions."}]'::jsonb,
+  portfolio_list = '[{"title": "Skyline Tower BGC", "description": "45-story residential condominium featuring advanced wind-load resistance design.", "image": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&q=80&w=800"}, {"title": "Makati Commercial Hub", "description": "Mixed-use commercial development with deep foundation structural engineering.", "image": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=800"}]'::jsonb
 WHERE id = '11111111-1111-1111-1111-111111111111';
 
 UPDATE public.engineers SET 
@@ -50,7 +55,9 @@ UPDATE public.engineers SET
   verification_status = 'verified', 
   rating = 4.7, 
   review_count = 18,
-  specialties = ARRAY['Geotechnical', 'Soil Analysis', 'Slope Stability', 'Foundation Design']
+  specialties = ARRAY['Geotechnical', 'Soil Analysis', 'Slope Stability', 'Foundation Design'],
+  experience_list = '[{"role": "Senior Geotechnical Engineer", "company": "Visayas Soils Inc.", "period": "2020 - Present", "description": "Leading geotechnical investigations for major infrastructure projects in Cebu and Iloilo."}]'::jsonb,
+  portfolio_list = '[{"title": "Cebu Hills Development", "description": "Comprehensive slope stabilization for a luxury residential complex.", "image": "https://images.unsplash.com/photo-1590066305974-bc19973f74f8?auto=format&fit=crop&q=80&w=800"}]'::jsonb
 WHERE id = '22222222-2222-2222-2222-222222222222';
 
 UPDATE public.engineers SET 

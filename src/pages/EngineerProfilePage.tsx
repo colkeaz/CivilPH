@@ -17,7 +17,7 @@ import {
   AlertCircle,
   ChevronLeft
 } from 'lucide-react';
-import { getEngineerById, getServicePackages } from '../services/engineerService';
+import { getEngineerById, getServicePackages, getEngineerReviews } from '../services/engineerService';
 
 const EngineerProfilePage = () => {
   const navigate = useNavigate();
@@ -46,14 +46,24 @@ const EngineerProfilePage = () => {
           about: engData.engineers.bio || 'No bio provided.',
           license: engData.engineers.prc_license_number || 'N/A',
           rate: 0, // Will be updated from service packages
-          // Mocking these for now as they are not in the basic schema yet
-          experienceList: [],
-          portfolio: [],
+          experienceList: engData.engineers.experience_list || [],
+          portfolio: engData.engineers.portfolio_list || [],
           reviews: [],
           responseTime: '2-4 hours',
           projectsCompleted: 0,
           languages: 'English, Filipino'
         };
+        
+        const reviewsData = await getEngineerReviews(id);
+        mapped.reviews = reviewsData.map((r: any) => ({
+          author: r.profiles?.first_name ? `${r.profiles.first_name} ${r.profiles.last_name}` : 'Unknown Client',
+          role: 'Client',
+          rating: r.rating,
+          date: new Date(r.created_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
+          title: '', // Not in schema, can derive or leave empty
+          content: r.comment
+        }));
+
         setEngineer(mapped);
 
         const packages = await getServicePackages(id);

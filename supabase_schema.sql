@@ -29,6 +29,8 @@ CREATE TABLE public.engineers (
   rating NUMERIC(3,2) DEFAULT 5.00,
   review_count INTEGER DEFAULT 0,
   is_featured BOOLEAN DEFAULT FALSE,
+  experience_list JSONB DEFAULT '[]'::jsonb,
+  portfolio_list JSONB DEFAULT '[]'::jsonb,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
