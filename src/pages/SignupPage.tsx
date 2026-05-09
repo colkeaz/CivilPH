@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Mail, Lock, User, Phone, ArrowRight } from "lucide-react";
+import { Mail, Lock, User, Phone, ArrowRight, ChevronLeft } from "lucide-react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Toast from "../components/Toast";
@@ -146,7 +146,10 @@ const SignupPage = () => {
           {/* Right Panel - Form */}
           <div className="lg:w-1/2 flex items-center justify-center p-8 lg:p-16">
             <div className="max-w-md w-full space-y-8">
-              <div className="space-y-3 text-center lg:text-left">
+              <div className="space-y-3 text-center lg:text-left flex flex-col items-center lg:items-start">
+                <Link to="/" className="inline-flex items-center gap-2 text-sm font-bold text-gray-400 hover:text-[#088395] transition-colors mb-2 -ml-2 p-2 rounded-lg hover:bg-[#088395]/5 self-start">
+                  <ChevronLeft size={18} /> Back to Home
+                </Link>
                 <h1 className="text-4xl font-bold text-[#191c1e] tracking-tight">
                   Create an Account
                 </h1>

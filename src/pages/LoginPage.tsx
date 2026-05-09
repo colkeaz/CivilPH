@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../store/AuthContext';
-import { Mail, Lock } from 'lucide-react';
+import { Mail, Lock, ChevronLeft } from 'lucide-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Toast from '../components/Toast';
@@ -114,6 +114,9 @@ const LoginPage = () => {
           <div className="lg:w-1/2 flex items-center justify-center p-8 lg:p-16">
             <div className="max-w-md w-full space-y-10">
               <div className="space-y-3">
+                <Link to="/" className="inline-flex items-center gap-2 text-sm font-bold text-gray-400 hover:text-[#088395] transition-colors mb-2 -ml-2 p-2 rounded-lg hover:bg-[#088395]/5">
+                  <ChevronLeft size={18} /> Back to Home
+                </Link>
                 <h1 className="text-4xl font-bold text-[#191c1e] tracking-tight">Welcome Back</h1>
                 <p className="text-gray-500 font-medium text-lg">Log in to your CEguradista account to continue.</p>
               </div>

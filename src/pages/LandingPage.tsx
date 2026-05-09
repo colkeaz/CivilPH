@@ -5,12 +5,13 @@ import HeroSection from '../features/landing/HeroSection';
 import WhyChooseSection from '../features/landing/WhyChooseSection';
 import Footer from '../components/Footer';
 import { useAuth } from '../store/AuthContext';
-import { X } from 'lucide-react';
+import { X, CheckCircle2 } from 'lucide-react';
 
 const LandingPage = () => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
+  const [showRequirementsModal, setShowRequirementsModal] = useState(false);
 
   const handleApplyClick = () => {
     if (isAuthenticated) {
@@ -84,7 +85,7 @@ const LandingPage = () => {
             <p className="text-xl text-gray-400 mb-12 leading-relaxed">Join an elite network of professionals. Expand your practice, connect with high-intent clients, and manage your pipeline through our dedicated professional dashboard.</p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <button onClick={handleApplyClick} className="bg-[#a3eeff] text-[#001f25] font-bold px-12 py-5 rounded-xl hover:bg-[#76d4e7] transition-all shadow-lg shadow-[#a3eeff]/10">Apply as Engineer</button>
-              <button className="border border-gray-600 text-white font-bold px-12 py-5 rounded-xl hover:bg-white/5 transition-all">View Requirements</button>
+              <button onClick={() => setShowRequirementsModal(true)} className="border border-gray-600 text-white font-bold px-12 py-5 rounded-xl hover:bg-white/5 transition-all">View Requirements</button>
             </div>
           </div>
         </section>
@@ -132,7 +133,51 @@ const LandingPage = () => {
           </div>
         )}
 
-
+        {showRequirementsModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
+            <div className="bg-white rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
+              <div className="flex justify-between items-center p-6 border-b border-gray-100">
+                <h3 className="text-xl font-bold text-gray-900">Engineer Requirements</h3>
+                <button onClick={() => setShowRequirementsModal(false)} className="text-gray-400 hover:text-gray-600 transition-colors">
+                  <X size={24} />
+                </button>
+              </div>
+              <div className="p-8 space-y-6">
+                <div className="space-y-6">
+                  <div className="flex gap-4 items-start">
+                    <div className="text-[#006574] mt-1"><CheckCircle2 size={24} /></div>
+                    <div>
+                      <h4 className="font-bold text-gray-900 text-lg">Valid PRC License</h4>
+                      <p className="text-sm text-gray-600 mt-1">Must be a registered Civil Engineer in the Philippines with an active Professional Regulation Commission (PRC) license.</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-4 items-start">
+                    <div className="text-[#006574] mt-1"><CheckCircle2 size={24} /></div>
+                    <div>
+                      <h4 className="font-bold text-gray-900 text-lg">Professional Experience</h4>
+                      <p className="text-sm text-gray-600 mt-1">A minimum of 3 years of verifiable professional experience in structural design, construction management, or related fields.</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-4 items-start">
+                    <div className="text-[#006574] mt-1"><CheckCircle2 size={24} /></div>
+                    <div>
+                      <h4 className="font-bold text-gray-900 text-lg">Identity Verification</h4>
+                      <p className="text-sm text-gray-600 mt-1">Valid government-issued ID matching your PRC records for identity verification purposes.</p>
+                    </div>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => {
+                    setShowRequirementsModal(false);
+                    handleApplyClick();
+                  }}
+                  className="w-full bg-[#006574] text-white font-bold py-4 rounded-xl hover:bg-[#004e5a] transition-colors shadow-lg mt-8">
+                  I meet these requirements
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
       </main>
       
