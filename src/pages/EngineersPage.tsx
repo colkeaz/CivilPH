@@ -69,14 +69,14 @@ const CustomDropdown: React.FC<DropdownProps> = ({ label, options, value, onChan
 const EngineersPage = () => {
   const [engineers, setEngineers] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [location, setLocation] = useState('Any Location');
+  const [location, setLocation] = useState('');
   const [specialty, setSpecialty] = useState('All Specializations');
   const [minRating, setMinRating] = useState('Any Rating');
   const [currentPage, setCurrentPage] = useState(1);
 
   // Active filters applied on button press
   const [appliedSearch, setAppliedSearch] = useState('');
-  const [appliedLocation, setAppliedLocation] = useState('Any Location');
+  const [appliedLocation, setAppliedLocation] = useState('');
   const [appliedSpecialty, setAppliedSpecialty] = useState('All Specializations');
   const [appliedRating, setAppliedRating] = useState('Any Rating');
 
@@ -135,7 +135,8 @@ const EngineersPage = () => {
         eng.title.toLowerCase().includes(appliedSearch.toLowerCase()) ||
         eng.specialties.some((s: string) => s.toLowerCase().includes(appliedSearch.toLowerCase()));
 
-      const matchLocation = appliedLocation === 'Any Location' || eng.city === appliedLocation;
+      const matchLocation = !appliedLocation || 
+        eng.city.toLowerCase().includes(appliedLocation.toLowerCase());
 
       const matchSpecialty = appliedSpecialty === 'All Specializations' ||
         eng.specialties.some((s: string) => s.toLowerCase().includes(appliedSpecialty.toLowerCase()));
@@ -205,12 +206,20 @@ const EngineersPage = () => {
                     </div>
                   </div>
 
-                  <CustomDropdown
-                    label="Location"
-                    options={ALL_LOCATIONS}
-                    value={location}
-                    onChange={setLocation}
-                  />
+                  <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-2">Location</label>
+                    <div className="relative">
+                      <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                      <input
+                        type="text"
+                        placeholder="City or province..."
+                        className="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 pl-10 pr-4 focus:ring-2 focus:ring-[#006574]/20 transition-all outline-none text-gray-900 placeholder-gray-400"
+                        value={location}
+                        onChange={(e) => setLocation(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && applyFilters()}
+                      />
+                    </div>
+                  </div>
 
                   <CustomDropdown
                     label="Specialization"
