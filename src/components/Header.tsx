@@ -101,7 +101,7 @@ const Header = () => {
                         onClick={() => setIsUserDropdownOpen(false)}
                         className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
                       >
-                        <FileText size={15} className="text-gray-400" /> Structural Reports
+                        <FileText size={15} className="text-gray-400" /> My reports
                       </Link>
                       <Link
                         to="/admin/verify"
