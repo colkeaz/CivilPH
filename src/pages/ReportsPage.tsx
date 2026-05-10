@@ -85,7 +85,7 @@ const ReportsPage = () => {
 
           {/* Page Header */}
           <div className="mb-10">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">Reports Portal</h1>
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">Structural Reports</h1>
             <p className="text-gray-500 text-lg">Access your structural assessment reports and engineer recommendations.</p>
           </div>
 

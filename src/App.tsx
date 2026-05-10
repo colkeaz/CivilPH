@@ -37,7 +37,7 @@ function App() {
         <Route path="/reports" element={<ProtectedRoute><ReportsPage /></ProtectedRoute>} />
         <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
         <Route path="/reference" element={<ProtectedRoute><ReferencePage /></ProtectedRoute>} />
-        <Route path="/admin/verify" element={<ProtectedRoute requireAdmin><VerificationQueue /></ProtectedRoute>} />
+        <Route path="/admin/verify" element={<ProtectedRoute><VerificationQueue /></ProtectedRoute>} />
       </Routes>
     </div>
 

@@ -31,7 +31,7 @@ const Footer = () => {
                 <>
                   <li><Link to="/engineers" className="text-gray-500 hover:text-[#006574] transition-colors text-sm font-medium">Find an Engineer</Link></li>
                   <li><Link to="/reference" className="text-gray-500 hover:text-[#006574] transition-colors text-sm font-medium">Reference Guide (NSCP)</Link></li>
-                  <li><Link to="/reports" className="text-gray-500 hover:text-[#006574] transition-colors text-sm font-medium">My Reports</Link></li>
+                  <li><Link to="/reports" className="text-gray-500 hover:text-[#006574] transition-colors text-sm font-medium">Structural Reports</Link></li>
                 </>
               )}
               {!isAuthenticated && (
