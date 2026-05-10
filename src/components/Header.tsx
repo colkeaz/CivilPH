@@ -90,6 +90,13 @@ const Header = () => {
                     </div>
                     <div className="p-2">
                       <Link
+                        to="/profile"
+                        onClick={() => setIsUserDropdownOpen(false)}
+                        className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                      >
+                        <User size={15} className="text-gray-400" /> My Profile
+                      </Link>
+                      <Link
                         to="/reports"
                         onClick={() => setIsUserDropdownOpen(false)}
                         className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
@@ -156,6 +163,13 @@ const Header = () => {
                 </div>
                 {user?.firstName} {user?.lastName}
               </div>
+              <Link
+                to="/profile"
+                className="flex items-center gap-2 text-gray-700 font-medium py-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <User size={16} className="text-gray-400" /> My Profile
+              </Link>
               <Link
                 to="/reports"
                 className="flex items-center gap-2 text-gray-700 font-medium py-2"

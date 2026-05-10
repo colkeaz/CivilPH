@@ -14,6 +14,7 @@ import AuthCallback from './pages/AuthCallback';
 import TermsPage from './pages/TermsPage';
 import PrivacyPage from './pages/PrivacyPage';
 import VerificationProcessPage from './pages/VerificationProcessPage';
+import ProfilePage from './pages/ProfilePage';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
         <Route path="/booking/:engineerId" element={<ProtectedRoute><BookingPage /></ProtectedRoute>} />
         <Route path="/checkout" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>} />
         <Route path="/reports" element={<ProtectedRoute><ReportsPage /></ProtectedRoute>} />
+        <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
         <Route path="/reference" element={<ProtectedRoute><ReferencePage /></ProtectedRoute>} />
         <Route path="/admin/verify" element={<ProtectedRoute requireAdmin><VerificationQueue /></ProtectedRoute>} />
       </Routes>
