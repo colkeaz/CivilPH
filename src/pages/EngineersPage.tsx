@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import {
@@ -67,16 +67,20 @@ const CustomDropdown: React.FC<DropdownProps> = ({ label, options, value, onChan
 };
 
 const EngineersPage = () => {
+  const [searchParams] = useSearchParams();
+  const initialSearch = searchParams.get('q') || '';
+  const initialLocation = searchParams.get('location') || '';
+
   const [engineers, setEngineers] = useState<any[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [location, setLocation] = useState('');
+  const [searchTerm, setSearchTerm] = useState(initialSearch);
+  const [location, setLocation] = useState(initialLocation);
   const [specialty, setSpecialty] = useState('All Specializations');
   const [minRating, setMinRating] = useState('Any Rating');
   const [currentPage, setCurrentPage] = useState(1);
 
   // Active filters applied on button press
-  const [appliedSearch, setAppliedSearch] = useState('');
-  const [appliedLocation, setAppliedLocation] = useState('');
+  const [appliedSearch, setAppliedSearch] = useState(initialSearch);
+  const [appliedLocation, setAppliedLocation] = useState(initialLocation);
   const [appliedSpecialty, setAppliedSpecialty] = useState('All Specializations');
   const [appliedRating, setAppliedRating] = useState('Any Rating');
 
@@ -135,7 +139,7 @@ const EngineersPage = () => {
         eng.title.toLowerCase().includes(appliedSearch.toLowerCase()) ||
         eng.specialties.some((s: string) => s.toLowerCase().includes(appliedSearch.toLowerCase()));
 
-      const matchLocation = !appliedLocation || 
+      const matchLocation = !appliedLocation || appliedLocation === 'Any Location' ||
         eng.city.toLowerCase().includes(appliedLocation.toLowerCase());
 
       const matchSpecialty = appliedSpecialty === 'All Specializations' ||

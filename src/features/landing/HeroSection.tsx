@@ -46,7 +46,7 @@ const HeroSection = () => {
                 onClick={() => navigate('/reference')}
                 className="bg-white border border-gray-200 text-gray-700 font-bold px-10 py-4 rounded-xl hover:bg-gray-50 transition-all shadow-sm"
               >
-                Explore Projects
+                Explore Guide
               </button>
             </div>
             
